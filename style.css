@@ -82,6 +82,22 @@ h3 { font-weight:300; }
   }
 }
 
+@-webkit-keyframes xfade
+{
+  0%{
+    opacity: 0;
+  }
+  10%{
+    opacity: 1;
+  }
+  33% {
+    opacity: 1;
+  }
+  43%{
+    opacity: 0;
+  }
+}
+
 .design a img
 {
   max-width:100%;
