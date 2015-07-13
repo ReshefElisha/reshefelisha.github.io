@@ -6,7 +6,7 @@ void setup(){
     $(window).height());
   background(0);
   colorMode(RGB);
-  stroke(255,255,0,20);
+  stroke(255,255,0,2);
   for(int l = 0; l<numLines; l++){
     lines[l][0] = (int) random(width);
     lines[l][1] = (int) random(height);
