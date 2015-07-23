@@ -1,4 +1,4 @@
-int numLines = 20;
+int numLines = 100;
 int[][] lines = new int[numLines][5];
 int b = 0;
 void setup(){
@@ -6,7 +6,7 @@ void setup(){
     $(window).height());
   background(0);
   colorMode(RGB);
-  stroke(255,255,0);
+  stroke(255,255,0,2);
   for(int l = 0; l<numLines; l++){
     lines[l][0] = (int) random(width);
     lines[l][1] = (int) random(height);
