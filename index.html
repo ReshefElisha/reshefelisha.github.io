@@ -1,116 +1,406 @@
-<html>
-  <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.js"></script>
-    <link href='style.css' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
-  </head>
-  <body>
-    <div class="jumbotron">
-      <div class="container">
-        <div class="col-md-4">
-          <img class="img-responsive img-circle" id="ReshefElisha" alt="Reshef Elisha" src="img/SteelHacksSm.png" />
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Reshef Elisha</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+
+    <!-- Custom Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/creative.css" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="page-top">
+
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">Reshef Elisha</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="ReshefElisha_Resume.pdf" target="_blank">Résumé</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#ProjectsTitleBox">Projects</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#PortfolioTitleBox">Designs</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
-        <div class="col-md-8">
-          <h2>Hi there! I am <big><big>Reshef Elisha</big></big>. I'm an electrical engineering student at the University of Pittsburgh also pursuing minors in Mechanical Engineering and Art. </h2>
-          <h3>I program during my free time, and am one of the main organizers of <a href="http://www.steelhacks.com">SteelHacks</a>, the University of Pittsburgh's annual hackathon.</h3>
-          <h2>Check out my <a href="#projects">projects</a>, <a href="#illustrations">illustrations</a>, or <a href="ReshefElisha_Resume.pdf" target="_blank">r&eacute;sum&eacute;</a>.</h2>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <header>
+        <div class="header-content">
+            <div class="header-content-inner">
+                <h1>Reshef Elisha</h1>
+                <hr>
+                <p>I'm an electrical engineering student at the University of Pittsburgh also pursuing minors in Mechanical Engineering and Art.</p>
+                <a href="ReshefElisha_Resume.pdf" target="_blank" class="btn btn-primary btn-xl page-scroll">Résumé</a>
+            </div>
         </div>
-      </div>
-    </div>
-    <div id="projects" class="container">
-      <h2>Projects:</h2>
-      <h3>Most of my projects are open source and on <a href="http://www.github.com/ReshefElisha" target="_blank">my Github page</a>, but I've placed my favorite ones here.</h3>
-      <div class="col-md-3">
-        <div class="project">
-        <h4>5-Color 3D printer nozzle</h4>
-        <h5>A 3D printer nozzle that has the ability to combine 5 colors (CMYK and White)</h5>
-        <div class="slideshow">
-          <img src="img/nozzle/1.PNG" class="slideshowImage"/>
-          <img src="img/nozzle/2.PNG" class="slideshowImage"/>
-          <img src="img/nozzle/3.PNG" class="slideshowImage"/>
+    </header>
+
+    <section class="bg-primary titlebox" id="ProjectsTitleBox">
+        <div class="container">
+            <div class="row no-gutter">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h1 class="section-heading">PROJECTS</h1>
+                </div>
+            </div>
         </div>
+    </section>
+
+    <section class="no-padding" id="projects">
+        <div class="container-fluid">
+            <div class="row no-gutter">
+               <div class="col-lg-4 col-sm-6">
+                    <a href="#" class="portfolio-box">
+                        <div class="carousel slide" data-ride="carousel">
+                          <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                              <img src="img/projects/5/1.png" alt="" class="img-responsive">
+                            </div>
+                            <div class="item">
+                              <img src="img/projects/5/2.png" alt="" class="img-responsive">
+                            </div>
+                            <div class="item">
+                              <img src="img/projects/5/3.png" alt="" class="img-responsive">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-name">
+                                    MIPS style processor
+                                </div>
+                                <div class="project-category text-faded">
+                                    A 16-bit processor inspired by the MIPS architecture, and an assembler to go with it. Made as a final project for ECE-142, Computer Organization with Dr. Irvin Jones.
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <a href="#" class="portfolio-box">
+                        <div class="carousel slide" data-ride="carousel">
+                          <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                              <img src="img/projects/1/1.png" alt="" class="img-responsive">
+                            </div>
+                            <div class="item">
+                              <img src="img/projects/1/2.png" alt="" class="img-responsive">
+                            </div>
+                            <div class="item">
+                              <img src="img/projects/1/3.png" alt="" class="img-responsive">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-name">
+                                    5-Color 3D printer nozzle
+                                </div>
+                                <div class="project-category text-faded">
+                                    A 3D printer nozzle that has the ability to combine 5 colors (CMYK and White).
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <a href="#" class="portfolio-box">
+                        <div class="carousel slide" data-ride="carousel">
+                          <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                              <img src="img/projects/2/1.png" alt="" class="img-responsive">
+                            </div>
+                            <div class="item">
+                              <img src="img/projects/2/2.png" alt="" class="img-responsive">
+                            </div>
+                            <div class="item">
+                              <img src="img/projects/2/3.png" alt="" class="img-responsive">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-name">
+                                    Custom clarinet mouthpiece
+                                </div>
+                                <div class="project-category text-faded">
+                                    A custom clarinet mouthpiece design. Worked right off the 3D printer.
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <a href="#" class="portfolio-box">
+                        <div class="carousel slide" data-ride="carousel">
+                          <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                              <img src="img/projects/3/1.png" alt="" class="img-responsive">
+                            </div>
+                            <div class="item">
+                              <img src="img/projects/3/2.png" alt="" class="img-responsive">
+                            </div>
+                            <div class="item">
+                              <img src="img/projects/3/3.png" alt="" class="img-responsive">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-name">
+                                    CD Cover Generator
+                                </div>
+                                <div class="project-category text-faded">
+                                    A small "programmatic art" pattern generator.
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <a href="#" class="portfolio-box">
+                        <div class="carousel slide" data-ride="carousel">
+                          <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                              <img src="img/projects/4/1.png" alt="" class="img-responsive">
+                            </div>
+                            <div class="item">
+                              <img src="img/projects/4/2.png" alt="" class="img-responsive">
+                            </div>
+                            <div class="item">
+                              <img src="img/projects/4/3.png" alt="" class="img-responsive">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-name">
+                                    ConvR: Database-less chat software
+                                </div>
+                                <div class="project-category text-faded">
+                                    A chat web application that doesn't save any of the text transmitted through it, so you're the only one to keep your data.
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <a href="#" class="portfolio-box">
+                        <img src="img/comingsoon/1.jpg" class="img-responsive" alt="">
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-name">
+                                    Coming Soon
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-3">
-        <div class="project">
-        <h4>Custom clarinet mouthpiece</h4>
-        <h5>A custom clarinet mouthpiece design. Worked right off the 3D printer</h5>
-        <div class="slideshow">
-          <img src="img/clarinet/1.PNG" class="slideshowImage"/>
-          <img src="img/clarinet/2.PNG" class="slideshowImage"/>
-          <img src="img/clarinet/3.PNG" class="slideshowImage"/>
+    </section>
+    
+    <section class="bg-primary titlebox" id="PortfolioTitleBox">
+        <div class="container">
+            <div class="row no-gutter">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h1 class="section-heading">DESIGNS</h1>
+                </div>
+            </div>
         </div>
+    </section>
+
+    <section class="no-padding" id="portfolio">
+        <div class="container-fluid">
+            <div class="row no-gutter">
+                <div class="col-lg-4 col-sm-6">
+                    <a href="img/portfolio/6.png" class="portfolio-box">
+                        <img src="img/designs/6.png" class="img-responsive" alt="">
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-name">
+                                    T-Shirt for Sierra Vista MS Orchestra
+                                </div>
+                                <div class="project-category text-faded">
+                                    A T-Shirt I designed for the Sierra Vista Middle School Symphonic Orchestra. It depics their director, Mr. Henry Miller, riding the mascot, the charger.
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <a href="img/portfolio/1.png" class="portfolio-box">
+                        <img src="img/designs/1.png" class="img-responsive" alt="">
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-name">
+                                    Panther Pitt T-Shirt
+                                </div>
+                                <div class="project-category text-faded">
+                                    Created for my University's football student section. This shirt is worn by thousands of Pitt students at football games.
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <a href="img/portfolio/2.png" class="portfolio-box">
+                        <img src="img/designs/2.png" class="img-responsive" alt="">
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-name">
+                                    Annabelle
+                                </div>
+                                <div class="project-category text-faded">
+                                    This piece was created to learn a new style of illustration.
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <a href="img/portfolio/3.png" class="portfolio-box">
+                        <img src="img/designs/3.png" class="img-responsive" alt="">
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-name">
+                                    LEMON logo
+                                </div>
+                                <div class="project-category text-faded">
+                                    A fictitious company logo. Made for a company with a cheerful, summery, and friendly brand identity.
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <a href="img/portfolio/5.png" class="portfolio-box">
+                        <img src="img/designs/5.png" class="img-responsive" alt="">
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-name">
+                                    3-D Printed Martian Habitat Floorplan
+                                </div>
+                                <div class="project-category text-faded">
+                                    My entry for a NASA contest to design a sub 1000 sqft floorplan for a martian habitat that could be 3D printed on the surface of a planet using in-situ materials.
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <a href="img/portfolio/4.png" class="portfolio-box">
+                        <img src="img/designs/4.png" class="img-responsive" alt="">
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <div class="project-name">
+                                    Two Ninjas
+                                </div>
+                                <div class="project-category text-faded">
+                                    Made with my little cousin, to teach him about illustration.
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="col-md-3">
-        <div class="project">
-        <h4><a href="https://github.com/ReshefElisha/CDCover" target="_blank">CD Cover Generator</a></h4>
-        <h5 class="projectDescription">A small "programmatic art" pattern generator. Created after an argument with my girlfriend that computers can't create art.</h5>
-        <div class="slideshow">
-          <img class="slideshowImage" src="img/CDCover/1.PNG"/>
-          <img class="slideshowImage" src="img/CDCover/2.PNG"/>
-          <img class="slideshowImage" src="img/CDCover/3.PNG"/>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">Let's Get In Touch!</h2>
+                    <hr class="primary">
+                    <p>The best way to contact me is by email, as I normally respond within 24 hours. Feel free to write to me, add me on LinkedIn, Facebook, or anything else!</p>
+                </div>
+                <div class="col-lg-3 text-center">
+                    <i class="fa fa-envelope-o fa-3x"></i>
+                    <p><a href="mailto:reshef.elisha@gmail.com">reshef.elisha@gmail.com</a></p>
+                </div>
+                <div class="col-lg-3 text-center">
+                    <i class="fa fa-linkedin-square fa-3x"></i>
+                    <p><a href="http://www.linkedin.com/in/reshefelisha">linkedin.com/in/reshefelisha</a></p>
+                </div>
+                <div class="col-lg-3 text-center">
+                    <i class="fa fa-github fa-3x"></i>
+                    <p><a href="http://github.com/ReshefElisha">github.com/ReshefElisha</a></p>
+                </div>
+                <div class="col-lg-3 text-center">
+                    <i class="fa fa-facebook-official fa-3x"></i>
+                    <p><a href="http://facebook.com/reshefelisha">facebook.com/reshefelisha</a></p>
+                </div>
+            </div>
         </div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="project">
-          <h4><a href="http://github.com/ReshefElisha/convr" target="_blank">Convr: Database-less hat software</a></h4>
-          <h5>A chat web application that doesn't save any of the text transmitted through it, so you keep all your data. Hosted on <a href="https://convr.herokuapp.com">https://convr.herokuapp.com</a></h5>
-          <div class="slideshow">
-            <img src="img/convr/1.PNG" class="slideshowImage"/>
-            <img src="img/convr/2.PNG" class="slideshowImage"/>
-            <img src="img/convr/3.PNG" class="slideshowImage"/>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="illustrations" class="container">
-      <h2>Designs</h2>
-      <h3>Click on any image to see a larger version</h3>
-      <div class="col-md-3">
-        <div class="design">
-          <h4>T-Shirt for Sierra Vista MS Orchestra</h4>
-          <h5>A T-Shirt I disegned for the Sierra Vista Middle School Symphonic Orchestra. It depics their director, Mr. Henry Miller, riding the mascot, the charger.</h5>
-          <div class="designImg"><a href="/img/designs/6.png" target="_blank"><img src="/img/designs/6.png" alt="SVMS Orchestra T-Shirt"></a></div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="design">
-          <h4>3-D Printed Martian Habitat Floorplan</h4>
-          <h5>My entry for a NASA contest to design a sub 1000 sqft floorplan for a martian habitat that could be 3D printed on the surface of a planet using in-situ materials.</h5>
-          <div class="designImg"><a href="/img/designs/5.png" target="_blank"><img src="/img/designs/5.png" alt="Martian Habitat Floorplan"></a></div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="design">
-          <h4>Panther Pitt T-Shirt</h4>
-          <h5>Created for my University's football student section. This shirt was worn by thousands of Pitt students whenever they went to football games.</h5>
-          <div class="designImg"><a href="/img/designs/1.png" target="_blank"><img src="/img/designs/1.png" alt="Panther Pitt Shirt"></a></div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="design">
-          <h4>Annabelle</h4>
-          <h5>This piece was created to learn a new style of illustration</h5>
-          <div class="designImg"><a href="/img/designs/2.png" target="_blank"><img src="/img/designs/2.png" alt="Annabelle"></a></div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="design">
-          <h4>LEMON logo</h4>
-          <h5>A fictitious company logo. Made for a company with a cheerful, summery, and friendly brand identity.</h5>
-          <div class="designImg"><a href="/img/designs/3.png" target="_blank"><img src="/img/designs/3.png" alt="lemon logo"></a></div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="design">
-          <h4>Two Ninjas</h4>
-          <h5>Made with my little cousin, to show him what is illustration.</h5>
-          <div class="designImg"><a href="/img/designs/4.png" target="_blank"><img src="/img/designs/4.png" alt="ninjas"></a></div>
-        </div>
-      </div>
-    </div>
-  </body>
+    </section>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.fittext.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/creative.js"></script>
+    
+    <!-- Carousel JavaScript -->
+    <script>
+      $('.carousel').carousel({
+        interval: 4000
+      })
+    </script>
+
+</body>
+
 </html>
