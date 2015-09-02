@@ -1,4 +1,12 @@
 /*
+*COLORS USED:
+*Background, Link Color: #710822, rgba(113,8,34,.9)
+*Light Background, Navbar Font: #fdd8f4
+*Dark Background: #4b0415, rgba(75,4,21,.05)
+*Link Focus: #3c0935
+*/
+
+/*
 *Reshef Elisha additions
 */
 
@@ -6,7 +14,7 @@
   padding: 50px 0;
 }
 
-#contact {
+#contact, #description {
   background: #fdd8f4;
 }
 
@@ -191,7 +199,7 @@ header {
     min-height: auto;
     text-align: center;
     color: #fff;
-    background-image: url(../img/header.jpg);
+    background-image: url(../img/headerRED.jpg);
     background-position: center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
