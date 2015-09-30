@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>MIPS Processor - Reshef Elisha</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
+
+    <!-- Custom Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="../css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/creativeSAND.css" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="page-top">
+
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="http://reshefelisha.com">Reshef Elisha</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="../ReshefElisha_Resume.pdf" target="_blank">Résumé</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="../#Projects">Projects</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="../#Designs">Designs</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="../#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <header style="background-image: url(../img/projects/5/header.jpg); color:#000">
+        <div class="header-content">
+            <div class="header-content-inner">
+               <br/>
+               <br/>
+                <h1>16-bit MIPS processor</h1>
+                <hr style="border-color: #8b98c5">
+                <a href="#text" class="btn btn-primary btn-xl page-scroll" style="border-color: #8b98c5; background: #8b98c5">Read More</a>
+            </div>
+        </div>
+    </header>
+    <section id="text" style="background: #fff; padding-top: 30px; padding-bottom:10px;">
+        <div class="container">
+            <div class="row no-gutter">
+                <div class="col-lg-8 col-lg-offset-2">
+                    <p>My final project for Computer Organization (ECE 142) with Dr. Irvin Jones was to design and implement a 16-bit processor based on the MIPS architecture. The choice of implementation language was up to me, and I chose Python 2.7, as I am very familiar with it and some tricks that it has allowed me to write the entire thing in only 98 lines of code.</p>
+                    <p>My implementation includes 10 functions:</p>
+                      <ul>
+                        <li>ADDI: add an immediate value to a register's stored value. <code>RA&larr;RA+imm</code></li>
+                        <li>BEQ: Branch to the specified immediate value if the given register stores the value 0.</li>
+                        <li>NOP: The null operator, skips a cycle to let longer operations (memory operations) to happen safely.</li>
+                        <li>LA: Load an address into the MAR (memory address register). This memory register is then used to load or store a value in memory. <code>MAR&larr;RA</code></li>
+                        <li>LW: Load a word from memory. It loads the word stored in the address that the MAR stores and puts it into the given register. <code>RA&larr;MEM[MAR]</code></li>
+                        <li>SW: Store a word in memory. It stores the word from the given register into the memory address set by the MAR. <code>MEM[MAR]&larr;RA</code></li>
+                        <li>ADD: Adds two registers' values together and stores the new value into the first register. <code>RA&larr;RA+RB</code></li>
+                        <li>SUB: Subtracts the value stored in the second register from the value stored in the first register, and stores the new value in the first register. <code>RA&larr;RA-RB</code></li>
+                        <li>NOR: Performs the NOR binary operation on the values stored in the registers, and stores the new value in the first register. <code>RA&larr;RA&darr;RB</code></li>
+                        <li>J: Jumps the Program Counter to an immediate value. <code>PC&larr;imm</code></li>
+                      </ul>
+                      <p>The code of the full implementation can be found on <a href="http://github.com/ReshefElisha/16BitMIPSProcessor" target="_blank">my Github page</a>. Below are some of the schematics and steps I took to reach my final code.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section style="background: #fff; padding-top: 10px; padding-bottom:10px;">
+        <div class="container">
+            <div class="row no-gutter">
+                <h1 class="section-heading">Gallery</h1>
+                <div class="col-lg-12">
+                        <div class="carousel slide" id="Gallery" data-ride="carousel">
+                               <ol class="carousel-indicators">
+                                <li data-target="#Gallery" data-slide-to="0" class="active"></li>
+                                <li data-target="#Gallery" data-slide-to="1"></li>
+                                <li data-target="#Gallery" data-slide-to="2"></li>
+                              </ol>
+                          <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                              <a href="../img/projects/5/whiteboard.jpg" target="_blank">
+                                <img src="../img/projects/5/whiteboard.jpg" alt="" class="img-responsive">
+                              </a>
+                            </div>
+                            <div class="item">
+                              <a href="../img/projects/5/Schematic.jpg" target="_blank">
+                                <img src="../img/projects/5/Schematic.jpg" alt="" class="img-responsive">
+                              </a>
+                            </div>
+                            <div class="item">
+                              <a href="../img/projects/5/control.png" target="_blank">
+                                <img src="../img/projects/5/control.png" alt="" class="img-responsive">
+                              </a>
+                            </div>
+                          </div>
+                          <a class="left carousel-control" href="#Gallery" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                          </a>
+                          <a class="right carousel-control" href="#Gallery" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                          </a>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- jQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="../js/jquery.easing.min.js"></script>
+    <script src="../js/jquery.fittext.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../js/creative.js"></script>
+    
+    <!-- Carousel JavaScript -->
+    <script>
+      $('.carousel').carousel({
+        interval: 4000
+      })
+    </script>
+
+</body>
+
+</html>

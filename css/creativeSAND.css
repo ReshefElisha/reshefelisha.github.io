@@ -61,6 +61,8 @@ a {
     transition: all .35s;
 }
 
+.portfolio-box a{color:#fff}
+
 a:hover,
 a:focus {
     color: #f2e7d4;
