@@ -63,7 +63,7 @@ a {
 
 a:hover,
 a:focus {
-    color: #fefde2;
+    color: #f2e7d4;
 }
 
 h1,
@@ -207,7 +207,7 @@ header {
     width: 100%;
     min-height: auto;
     text-align: center;
-    color: #fff;
+    color: #000;
     background-image: url(../img/headerSAND.jpg);
     background-position: center;
     -webkit-background-size: cover;
@@ -429,9 +429,9 @@ fieldset[disabled] .btn-default.active {
 .btn-primary:active,
 .btn-primary.active,
 .open > .dropdown-toggle.btn-primary {
-    border-color: #fefde2;
+    border-color: #BDA782;
     color: #fff;
-    background-color: #fefde2;
+    background-color: #BDA782;
 }
 
 .btn-primary:active,
