@@ -208,7 +208,7 @@ header {
     min-height: auto;
     text-align: center;
     color: #fff;
-    background-image: urlurl(../img/headerSAND.jpg);
+    background-image: url(../img/headerSAND.jpg);
     background-position: center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
