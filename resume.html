@@ -1,7 +1,8 @@
 <head>
+<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i" rel="stylesheet"
 <style>
     body {
-        font-family: "Roboto Condensed";
+        font-family: "Roboto Condensed", sans-serif;
     }
     
     .sheet{
@@ -44,19 +45,22 @@
         font-size: 10pt;
     }
     
-    .sidebar ul{
+    .sidebar ul, .main ul{
         padding-left: 20px;
     }
-    
+
     .name{
         font-weight: bold;
     }
+    .sidebar div{
+        color: #888;
+    }
     @media screen{
         .sheet {
-            width: 850pt;
+            width: 600pt;
             padding: 10pt;
             background: #fff;
-            box-shadow: 5px 5px 50px;
+            box-shadow: 5px 5px 30px #222;
         }
         body{
             display: flex;
@@ -173,7 +177,14 @@
     <div class="work">
         <h2>WORK EXPERIENCE:</h2>
         <ul>
-            <li><span class="name">Electric Imp</span> Product Development Support -- Mountain View, CA (remote)<span class="ra">(current, 2016)</span>
+            <li><span class="name">Lockheed Martin Controls & Avionics Center of Excellence</span> Electronics Intern -- Sunnyvale, CA<span class="ra">(Summer 2017)</span>
+                <ul>
+                    <li>Orion Launch Abort System Controller testing automation in Python and telemetry analysis in MATLAB</li>
+                    <li>Motor driver and initiator design in Zuken CR8000, including block diagrams and rad-hard parts analysis</li>
+                    <li>Cable design for motor valves testing and noise reduction</li>
+                </ul>
+            </li>
+            <li><span class="name">Electric Imp</span> Product Development Support -- Mountain View, CA (remote)<span class="ra">(Sep. 2016 - Dec. 2016)</span>
                 <ul>
                     <li>Continuing work and responsibilities from previous internship.</li>
                     <li>Work with Product Development and Support teams to create new customer solutions</li>
