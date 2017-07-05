@@ -14,10 +14,12 @@
       display: block;
       float: right;
       font-style: italic;
+      font-size: 8pt;
+      padding-top: 2pt;
     }
     
     .sidebar{
-        width: 200px;
+        width: 120pt;
     }
     
     .main {
@@ -29,7 +31,7 @@
     h1{
         font-style: italic;
         font-weight: 400;
-        font-size: 36pt;
+        font-size: 40pt;
     }
     
     h2{
@@ -39,6 +41,9 @@
         list-style-type: none;
         font-size: 10pt;
     }
+    .main ul li {
+        font-size: 11pt;
+    }
     .main ul li ul li{
         margin-right: 30pt;
         text-align: justify;
@@ -46,18 +51,34 @@
     }
     
     .sidebar ul, .main ul{
-        padding-left: 20px;
+        padding-left: 10pt;
     }
 
     .name{
         font-weight: bold;
     }
+    .pos{
+        text-decoration: underline;
+    }
     .sidebar div{
         color: #888;
+    }
+    
+    .sidebar h3{
+        font-size: 1em;
+    }
+    .sidebar p{
+        font-size: 10pt;
+        margin-top: 0pt;
+    }
+    
+    .lang{
+        font-size: 10pt;
     }
     @media screen{
         .sheet {
             width: 600pt;
+            height: 776pt;
             padding: 10pt;
             background: #fff;
             box-shadow: 5px 5px 30px #222;
@@ -165,33 +186,33 @@
                 <li>Bachelor of Science in Electrical Engineering<span class="ra">GPA 3.4</span></li>
                 </ul>
             </li>
-            <li><span class="name">University of Pittsburgh</span>, Pittsburgh, PA<span class="ra">(September 2014 – April 2016)</span>
+            <!--<li><span class="name">University of Pittsburgh</span>, Pittsburgh, PA<span class="ra">(September 2014 – April 2016)</span>
                 <ul>
                     <li>Bachelor of Science in Electrical Engineering<span class="ra">GPA: 3.2</span></li>
                     <li>Minors in Mechanical Engineering, Art</li>
                 </ul>
-            </li>
+            </li>-->
         </ul>
     </div>
 
     <div class="work">
         <h2>WORK EXPERIENCE:</h2>
         <ul>
-            <li><span class="name">Lockheed Martin Controls & Avionics Center of Excellence</span> Electronics Intern -- Sunnyvale, CA<span class="ra">(Summer 2017)</span>
+            <li><span class="name">Lockheed Martin Controls & Avionics Center of Excellence</span> <span class="pos">Electronics Intern</span> <span class="ra">Sunnyvale, CA - (Summer 2017)</span>
                 <ul>
                     <li>Orion Launch Abort System Controller testing automation in Python and telemetry analysis in MATLAB</li>
                     <li>Motor driver and initiator design in Zuken CR8000, including block diagrams and rad-hard parts analysis</li>
                     <li>Cable design for motor valves testing and noise reduction</li>
                 </ul>
             </li>
-            <li><span class="name">Electric Imp</span> Product Development Support -- Mountain View, CA (remote)<span class="ra">(Sep. 2016 - Dec. 2016)</span>
+            <li><span class="name">Electric Imp</span> <span class="pos">Product Development Support</span> <span class="ra">Mountain View, CA (remote) - (Sep. 2016 - Dec. 2016)</span>
                 <ul>
                     <li>Continuing work and responsibilities from previous internship.</li>
                     <li>Work with Product Development and Support teams to create new customer solutions</li>
                     <li>Electrical (PCB, Altium Designer), Mechanical (Enclosures, Solidworks)</li>
                 </ul>
             </li>
-            <li><span class="name">Electric Imp</span> Maker in Residence (Hardware Intern) -- Mountain View, CA<span class="ra">(Summer 2016)</span>
+            <li><span class="name">Electric Imp</span> <span class="pos">Maker in Residence (Hardware Intern)</span><span class="ra">Mountain View, CA - (Summer 2016)</span>
                 <ul>
                     <li>Worked in Altium to design 4 layer PCBs for IoT sensor applications.</li>
                     <li>Designed new and modified existing enclosures using SolidWorks</li>
@@ -199,7 +220,7 @@
                     <li>Wrote server side code to parse and display data collected by sensor board I designed</li>
                 </ul>
             </li>
-            <li><span class="name">Zego Robotics</span> 3D Printing/Robotics Intern -- Pittsburgh, PA<span class="ra">(Summer 2015)</span>
+            <li><span class="name">Zego Robotics</span> <span class="pos">3D Printing/Robotics Intern</span><span class="ra">Pittsburgh, PA - (Summer 2015)</span>
                 <ul>
                     <li>Collaborated with engineers at the new product introduction phase to develop and verify design changes</li>
                     <li>Designed a multi-color 3D printer nozzle in Autodesk Fusion</li>
@@ -208,7 +229,7 @@
                     <li>Designed a manual-work-robot simulation in Unity3D using Javascript and C#</li>
                 </ul>
             </li>
-            <li><span class="name">University of Pittsburgh Swanson School of Engineering</span> IT intern<span class="ra">(2014–2015)</span></li>
+            <li><span class="name">University of Pittsburgh Swanson School of Engineering</span> <span class="pos">IT intern</span><span class="ra">Pittsburgh, PA - (2014–2015)</span></li>
         </ul>
     </div>
     <div class="research">
