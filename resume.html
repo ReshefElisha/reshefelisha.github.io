@@ -7,7 +7,7 @@
     
     .sheet{
         display: flex;
-        margin:0;
+        margin: 0pt;
     }
     
     .ra{
@@ -51,8 +51,12 @@
         font-size: 10pt;
     }
     
-    .sidebar ul, .main ul{
+    ul{
         padding-left: 10pt;
+    }
+    
+    .projects ul li{
+        margin: 5pt 0;
     }
 
     .name{
@@ -60,6 +64,10 @@
     }
     .pos{
         text-decoration: underline;
+    }
+    .field{
+        color: #888;
+        font-size: 10pt;
     }
     .sidebar div{
         color: #888;
@@ -79,22 +87,31 @@
     @media screen{
         .sheet {
             width: 600pt;
+            min-width: 600pt;
+            float: left;
             height: 776pt;
             padding: 10pt;
             background: #fff;
             box-shadow: 5px 5px 30px #222;
+            margin: 10pt;
         }
         body{
             display: flex;
             align-items: center;
             justify-content: center;
             background: #444;
+            flex-wrap: wrap;
         }
     }
     
     @media print{
         .sheet{
             margin: 10pt;
+            page-break-after: always;
+        }
+        .main ul li ul li{
+            margin-right: 10pt;
+            
         }
     }
     
@@ -104,7 +121,9 @@
 </style>
 </head>
 
-<body> <div class="sheet">
+<body>
+
+<div class="sheet">
 <div class="sidebar">
     <h1>Reshef Elisha</h1>
     <p class="addr">5049 Vista Montana,</br>
@@ -124,7 +143,7 @@
         </ul>
         High school in US,
         Elementary, middle school in Belgium.
-        US and Israel dual citizen
+        US citizen.
     </div>
     
     <div class="skills"><h3>Skills:</h3>
@@ -144,7 +163,7 @@
                 <ul>
                     <li>C/C++</li>
                     <li>Python</li>
-                    <li>Java, Android </li>
+                    <li>Java, Android</li>
                     <li>HTML, CSS, JS</li>
                     <li>MATLAB</li>
                 </ul>
@@ -197,7 +216,7 @@
     </div>
 
     <div class="work">
-        <h2>WORK EXPERIENCE:</h2>
+        <h2>ENGINEERING EXPERIENCE:</h2>
         <ul>
             <li><span class="name">Lockheed Martin Controls & Avionics Center of Excellence</span> <span class="pos">Electronics Intern</span> <span class="ra">Sunnyvale, CA - (Summer 2017)</span>
                 <ul>
@@ -236,9 +255,15 @@
     <div class="research">
         <h2>RESEARCH:</h2>
         <ul>
-            <li>Human Mission To Mars Conceptual Design, Power Systems Team<span class="ra">Purdue University - (2017)</span>
+            <li><span class="name">Human Mission To Mars Conceptual Design</span>, Power Systems Team<span class="ra">Purdue University - (2017)</span>
                 <ul>
                     <li>Under Dr. Sarag Saikia, researched and designed conceptual power systems for continuing human mission to Mars. Identified technology readiness and possible improvements, created block diagrams and power schedule analysis, planned for entry-descent-landing and continuing growth of power needs.</li>
+                    <li><span class="name">Presented</span> the project and a Virtual Reality implementation of the engineered mission with Dr. Saikia at:
+                        <ul>
+                            <li><span class="name">Humans To Mars Summit 2017, Washington DC</span></li>
+                            <li><span class="name">NASA Goddard Space Center, Washington DC</span></li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
         </ul>
@@ -289,4 +314,118 @@
             <li>Active member in Hillel and Computer Science Club<span class="ra">(2014-Present)</span></li>
         </ul>
     </div>
-</div></div>
+</div>
+</div>
+<div class="sheet">
+    <div class="projects main">
+        <h2>PERSONAL PROJECTS:</h2>
+        <ul>
+            <li><span class="field">(Electrical Eng.)</span> <span class="name">ESP32 Breakout Development Platform</span>, Personal project in PCB design<span class="ra">(2016)</span>
+                <ul>
+                    <li>Using KiCad, designed a breakout for brand new ESP32 module by Espressif. Features include serial interfacing over USB, power (5V->3.3V) management, breadboard compatible for easier prototyping and development.</li>
+                    <li>
+                        <ul>
+                            <li>Tools used: KiCad, UART, USB 2.0, Linear Regulator, 603 scale passive components</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            
+            <li><span class="field">(CS)</span> <span class="name">Electric Imp platform emulator</span>, Personal project in CS<span class="ra">(2016)</span>
+                <ul>
+                    <li>Using C and Python to write an emulator for the Electric Imp platform. Running two Squirrel-Language Virtual Machines in parallel. One to emulate the device and run code, the other to emulate the Agent (server) and act as a basic local webserver.</li>
+                    <li>
+                        <ul>
+                            <li>Tools used: C, Python, Squirrel-Lang, Virtual Machines, threads</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            
+            <li><span class="field">(Electrical, Mechanical Eng.)</span> <span class="name">Robotic Chair</span>, Personal project in robotics<span class="ra">(2016)</span>
+                <ul>
+                    <li>Converted a regular office chair to a joystick-controlled powered chair. Used teensy 3.2 microcontroller for speed and acceleration control.</li>
+                    <li>
+                        <ul>
+                            <li>Tools used: Teensy microcontroller, 12V high torque motors, CNC mill</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            
+            <li><span class="field">(Electrical Eng.)</span> <span class="name">BitBeats gloves</span>, Fashion\Tech Hackathon submission<span class="ra">(2016)</span>
+                <ul>
+                    <li>Designed and developed soft touch sensors entirely out of conductive fabric. The user drums on the table and the glove’s onboard Raspberry Pi computer generates realistic drumming sounds.</li>
+                    <li>
+                        <ul>
+                            <li>Tools used: Soft circuits, conductive fabric, Python, Raspberry Pi </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            
+            <li><span class="field">(Electrical Eng., CS)</span> <span class="name">Heartbeat sensor</span>, Personal project to explore the Internet of Things<span class="ra">(2015)</span>
+                <ul>
+                    <li>Built an infrared heartbeat sensor and implemented a filter circuit to clean up the waveform. Connected to internet using an Electric Imp and wrote an Android app to monitor the sensor remotely. The app was used to set off a phone alarm if the beat was irregular, too fast, or too slow.</li>
+                    <li>
+                        <ul>
+                            <li>Tools used: Rapid prototyping, Electric Imp, Java for Android</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            
+            <li><span class="field">(UI/UX, CS, Music)</span> <span class="name">Melodyapp.co</span>, PennApps XII submission<span class="ra">(2015)</span>
+                <ul>
+                    <li>Uses computer vision and MIDI generation to take a picture drawn freehand by the user and create a melody out of the pictures. Developed a web and Android app.</li>
+                    <li>
+                        <ul>
+                            <li>Tools used: OpenCV, Python, Java for Android, HTML/CSS/JavaScript for web app</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            
+            <li><span class="field">(Electrical Eng.)</span> <span class="name">16-bit Processor design</span>, Term project: Comp.Org<span class="ra">(2015)</span> 
+                <ul>
+                    <li>Designed a MIPS-style architecture and ISA designed and implemented in a Python simulation. Wrote an assembler to go along with it.</li>
+                    <li>
+                        <ul>
+                            <li>Tools used: Altera Quartus, Python</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            
+            <li><span class="field">(Mechanical Eng.)</span> <span class="name">Multi-color 3D printer nozzle</span>, Personal project<span class="ra">(2015)</span>
+                <ul>
+                    <li>Designed, simulated, and prototyped a custom nozzle for a RepRap 3D printer able to mix 5 different types and colors of plastics during print-time, allowing for use of the full color spectrum using WCMYK plastic colors.</li>
+                    <li>
+                        <ul>
+                            <li>Tools used: Autodesk Fusion for final model, Blender 3D for original mockup, 3D printing for prototyping and sizing</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            
+            <li><span class="field">(Mechanical Design, Music)</span> <span class="name">Clarinet mouthpiece</span>, Personal project<span class="ra">(2014)</span>
+                <ul>
+                    <li>Designed and 3D printed a custom clarinet mouthpiece. Designed for a more open tone and better airflow. Using 3D printing allowed for multiple prototypes each with a slightly different configuration.</li>
+                    <li>
+                        <ul>
+                            <li>Tools used: Blender 3D, 3D printing</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            
+            <li><span class="field">(CS)</span> <span class="name">Android app development in Java</span>, Personal projects<span class="ra">(2014)</span>
+                <ul>
+                    <li>Notification-inator (3.8/5 stars, 5000+ downloads Android App store)</li>
+                    <li>XKCD Now Widget (4.5/5 stars, 1000+ downloads Android App store)</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
