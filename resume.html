@@ -1,13 +1,11 @@
 <head>
 <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i" rel="stylesheet">
+
+<!-- STYLE 1: BASE-->
 <style>
     body {
         font-family: "Roboto Condensed", sans-serif;
-    }
-    
-    .sheet{
-        display: flex;
-        margin: 0pt;
+        margin:0;
     }
     
     .ra{
@@ -19,13 +17,7 @@
       text-align: right;
     }
     
-    .sidebar{
-        width: 120pt;
-    }
-    
-    .main {
-        flex:1;
-    }
+
     h1, h2, h3, h4, ul{
         margin: 0;
     }
@@ -70,9 +62,11 @@
         font-size: 10pt;
     }
     .sidebar div{
-        color: #888;
+        /*color: #888;*/
     }
-    
+    .addrlinks{
+        color: black !important; 
+    }
     .sidebar h3{
         font-size: 1em;
     }
@@ -84,13 +78,123 @@
     .lang{
         font-size: 10pt;
     }
+    
+    #options{
+        width: 100%;
+        background: white;
+        position: fixed;
+        top:0;
+    }
+</style>
+
+<!-- STYLE 2: COLUMNS-->
+<style>
+    .sidebar{
+        width: 120pt;
+    }
+    
+    .main {
+        flex:1;
+    }
+    
+    .sheet{
+        display: flex;
+        margin: 0pt;
+    }
+    .ra{
+        padding-left:10pt;
+    }
+    @media print{
+    .main ul li ul li{
+        margin-right: 10pt;
+    }
+    }
+</style>
+
+<!-- STYLE 3: ROWS-->
+<style>
+.addrlinks{
+    display: block;
+    float: right;
+    text-align: top;
+    
+}
+.addrlinks p{
+    display: inline-block;
+    margin-left: 20pt;
+    text-align: justify;
+    vertical-align: text-top;
+}
+#title{
+    width: 100%;
+    color: black !important;
+    overflow: auto;
+}
+.sidebar h1{
+    display: block;
+    float: left;
+    font-size: 50pt;
+}
+.sidebar h3{
+    font-size: 10pt;
+}
+.courses{
+    margin-top: -3px;
+}
+.sidebar ul li, .sidebar ul{
+    display: inline;
+    padding-left: 0px;
+}
+.areas>li{
+    display: block !important;
+}
+
+.sidebar h4, .sidebar h3{
+    display: inline-block;
+    width: 90pt;
+}
+.lang ul::after{
+    content: "—";
+}
+.sidebar ul li::after{
+    content: ","
+}
+.areas>li::after, .sidebar li:last-of-type:after, .courses ul li:last-of-type:after, .skills>h3{
+    display:none;
+}
+.areas h4::after{
+    content: ":";
+}
+</style>
+
+<!-- STYLE 4: LEADERSHIP DETAILS -->
+<style>
+.leadership ul li ul{
+    display:none;
+}
+</style>
+
+<!-- STYLE 5: DECORATORS -->
+<style>
+.main h2::after{
+content: "";
+color: red;
+height: 1px;
+display: block;
+margin-right:0;
+background: black;
+}
+</style>
+
+<!-- STYLE 5: PRINT-->
+<style>
     @media screen{
         .sheet {
-            width: 600pt;
-            min-width: 600pt;
+            width: 612pt;
+            min-width: 612pt;
             float: left;
-            height: 776pt;
-            padding: 10pt;
+            height: 792pt;
+            padding: 15pt 25pt;
             background: #fff;
             box-shadow: 5px 5px 30px #222;
             margin: 10pt;
@@ -106,12 +210,14 @@
     
     @media print{
         .sheet{
-            margin: 10pt;
+            margin: 15pt 25pt;
             page-break-after: always;
         }
-        .main ul li ul li{
-            margin-right: 10pt;
-            
+        #options{
+            display:none;
+        }
+        body{
+            /*margin: 8px;*/
         }
     }
     
@@ -119,31 +225,69 @@
         margin: 0;
     }
 </style>
+<script>
+function toggleRC() {
+    if(document.getElementById("rowCheck").checked){
+        document.styleSheets[3].disabled = false;
+        document.styleSheets[2].disabled = true;
+    }
+    else{
+        document.styleSheets[2].disabled = false;
+        document.styleSheets[3].disabled = true;
+    }
+}
+
+function toggleLC() {
+    if(document.getElementById("ldrCheck").checked){
+        document.styleSheets[4].disabled = true;
+    }
+    else{
+        document.styleSheets[4].disabled = false;
+    }
+}
+
+function toggleDC() {
+    if(document.getElementById("decCheck").checked){
+        document.styleSheets[5].disabled = false;
+    }
+    else{
+        document.styleSheets[5].disabled = true;
+    }
+}
+
+document.styleSheets[3].disabled = false;
+document.styleSheets[2].disabled = true;
+</script>
 </head>
 
 <body>
-
+<div id="options">
+    Rows: <input type="checkbox" id="rowCheck" onclick="toggleRC()" checked>
+    Leadership: <input type="checkbox" id="ldrCheck" onclick="toggleLC()">
+    Decorators: <input type="checkbox" id="decCheck" onclick="toggleDC()" checked>
+</div>
 <div class="sheet">
 <div class="sidebar">
+    <div id="title">
     <h1>Reshef Elisha</h1>
-    <p class="addr">5049 Vista Montana,</br>
-    Yorba Linda, CA, 92886</br>
-    reshef.elisha@gmail.com</br>
-    (949) 466-4578</p>
-    
-    <p class="links">www.reshefelisha.com</br>
-    linkedin.com/in/reshefelisha</br>
-    github.com/reshefelisha</p>
-    
+    <div class="addrlinks">
+        <p class="addr">5049 Vista Montana,</br>
+        Yorba Linda, CA, 92886</br>
+        reshef.elisha@gmail.com</br>
+        (949) 466-4578</p>
+        
+        <p class="links">www.reshefelisha.com</br>
+        linkedin.com/in/reshefelisha</br>
+        github.com/reshefelisha</p>
+    </div>
+    </div>
     <div class="lang"><h3>Languages:</h3>
         <ul>
             <li>English (Fluent)</li>
             <li>French (Fluent)</li>
             <li>Hebrew (Fluent)</li>
         </ul>
-        High school in US,
-        Elementary, middle school in Belgium.
-        US citizen.
+        US citizen
     </div>
     
     <div class="skills"><h3>Skills:</h3>
@@ -151,11 +295,10 @@
             <li><h4>Electrical Hardware</h4>
                 <ul>
                     <li>Multi-layer PCB Design</li>
-                    <li>Altium Designer</li>
+                    <li>Altium</li>
                     <li>Altera Quartus</li>
-                    <li>X86 Assembly</li>
-                    <li>EAGLE CAD</li>
-                    <li>Oscilloscope, Logic Analyzer, Test Bench </li>
+                    <li>x86 Assembly</li>
+                    <li>Oscilloscope, Logic Analyzer, Test Bench</li>
                     <li>Soldering</li>
                 </ul>
             </li>
@@ -163,22 +306,17 @@
                 <ul>
                     <li>C/C++</li>
                     <li>Python</li>
-                    <li>Java, Android</li>
-                    <li>HTML, CSS, JS</li>
+                    <li>Java/Android</li>
+                    <li>HTML/CSS/JS</li>
                     <li>MATLAB</li>
+                    <li>Linux, Git</li>
                 </ul>
             </li>
             <li><h4>Mechanical</h4>
                 <ul>
-                    <li>3D CAD, Digital Design</li>
+                    <li>3D CAD/Digital Design</li>
                     <li>Autodesk CAD</li>
                     <li>SolidWorks</li>
-                </ul>
-            </li>
-            <li><h4>Tools:</h4>
-                <ul>
-                    <li>Arduino, Raspberry Pi</li>
-                    <li>Linux, Git</li>
                 </ul>
             </li>
         </ul>
@@ -186,21 +324,22 @@
     <div class="courses"><h3>Relevant Coursework:</h3>
         <ul>
             <li>Microprocessors</li>
-            <li>Signal Analysis</li>
+            <li>Digital Signals Processing</li>
             <li>Advanced C</li>
             <li>Semiconductors</li>
             <li>Electromagnetics</li>
-            <li>Computer Organization</li>
-            <li>Digital Logic</li>
-            <li>Structures and Properties of Materials</li>
-            <li>Linear Circuits</li>
+            <li>Computer Architecture</li>
         </ul>
     </div>
 </div>
 <div class="main">
     <div class="edu">
         <h2>EDUCATION:</h2>
-        <ul>
+        <ul><li><span class="name">Purdue University</span>, West Lafayette, IN<span class="ra"></br></span>
+                <ul>
+                <li><b>Master of Science in Electrical Engineering</b> - Communications, Networking, Signals and Image Processing</li>
+                </ul>
+            </li>
             <li><span class="name">Purdue University</span>, West Lafayette, IN<span class="ra">Graduating December ‘17</br>Major GPA 3.5</span>
                 <ul>
                 <li>Bachelor of Science in Electrical Engineering</li>
@@ -225,32 +364,29 @@
                     <li>Cable design for motor valves testing and noise reduction</li>
                 </ul>
             </li>
-            <li><span class="name">Electric Imp</span>
-                <ul>
-                    <li style="margin-right: 0"><span class="pos">Product Development Support</span> <span class="ra">Mountain View, CA (remote) - Sep. 2016 - Dec. 2016</span>
+            <li><span class="name">Electric Imp</span> <span class="pos">Product Development Support</span> <span class="ra">Mountain View, CA (remote) - Sep. 2016 - Dec. 2016</span>
                         <ul>
-                            <li>Continuing work and responsibilities from previous internship.</li>
+                            <li>Continuing work and responsibilities from previous internship</li>
                             <li>Work with Product Development and Support teams to create new customer solutions</li>
-                            <li>Electrical (PCB, Altium Designer), Mechanical (Enclosures, Solidworks)</li>
+                            <li>Electrical (PCB, Altium Designer), Mechanical (Enclosures, Solidworks) design and modifications</li>
                         </ul>
-                    </li>
-                    <li style="margin-right: 0"><span class="pos">Maker in Residence (Hardware Intern)</span><span class="ra">Mountain View, CA - Summer 2016</span>
+            </li>
+            <li><span class="name">Electric Imp</span> <span class="pos">Maker in Residence (Hardware Intern)</span><span class="ra">Mountain View, CA - Summer 2016</span>
                         <ul>
                             <li>Designed multi-layer PCBs in Altium, IoT sensor applications</li>
                             <li>Designed new and modified existing enclosures using SolidWorks</li>
                             <li>Wrote firmware and application level code to interface with I2C, SPI, UART peripherals</li>
                             <li>Wrote server side code to parse and display data collected by sensor boards</li>
+                            <li>Designed new sensor node. Product now being manufactured and sold.</li>
                         </ul>
                     </li>
-                </ul>
-            </li>
             <li><span class="name">Zego Robotics</span> <span class="pos">3D Printing/Robotics Intern</span><span class="ra">Pittsburgh, PA - Summer 2015</span>
                 <ul>
-                    <li>Collaborated with engineers at the new product introduction phase to develop and verify design changes</li>
+                    <!--<li>Collaborated with engineers at the new product introduction phase to develop and verify design changes</li>-->
                     <li>Designed a multi-color 3D printer nozzle in Autodesk Fusion</li>
-                    <li>Using a serial connection: Wrote the printer’s interface to communicate with PC</li>
+                    <li>Wrote the printer’s interface to communicate with PC over USB</li>
                     <li>Designed and programmed UI for printer’s software in JavaScript</li>
-                    <li>Designed a manual-work-robot simulation in Unity3D, JavaScript and C#</li>
+                    <!--<li>Designed a manual-work-robot simulation in Unity3D, JavaScript and C#</li>-->
                 </ul>
             </li>
             <li><span class="name">University of Pittsburgh Swanson School of Engineering</span> <span class="pos">IT intern</span><span class="ra">Pittsburgh, PA - 2014–2015</span></li>
@@ -275,9 +411,21 @@
             </li>
         </ul>
         <ul>
-            <li><span class="name">Material Sciences Research</span><span class="ra">University of Pittsburgh - 2015</span>
+            <li><span class="name">3D Printed Steel in Nuclear Reactor Environments</span><span class="ra">University of Pittsburgh - 2015</span>
                 <ul>
-                    <li>Undergraduate researcher with Dr. Isaac Garcia studying the microstructure of 3D printed stainless steel and its application in nuclear reactor conditions</li>
+                    <li>Under Dr. Isaac Garcia, studyed the microstructure of 3D printed stainless steel and application in nuclear reactors</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="publication">
+        <h2>PUBLICATIONS:</h2>
+        <ul>
+            <li><span class="name">Exploration Systems Requirements to Establish a Sustainable Human Presence on Mars</span><span class="ra">AIAA Space - Sept. 2017</span>
+                <ul>
+                    <li>Elizabeth A. Marandola, Amy Comeau, Glynn Smith, Noah Gordon, Michael Weiss, Reshef Elisha, Steven A. Zusack, Benjamin Hilker, Kevin LeCaptian, L. Pablo Podesta, and Sarag J. Saikia
+                    </li>
                 </ul>
             </li>
         </ul>
@@ -286,11 +434,25 @@
     <div class="leadership">
         <h2>LEADERSHIP:</h2>
         <ul>
-            <li><span class="name">Professional Lead</span>, Purdue IEEE<span class="ra">2017-Present</span></li>
-            <li><span class="name">Lead Organizer</span>, SEDS Space Hackathon<span class="ra">2016-Present</span></li>
-            <li><span class="name">President and Chair</span>, University of Pittsburgh's IEEE chapter<span class="ra">2015-2016</span>
+            <li><span class="name">Industrial Relations Lead</span>, Purdue IEEE student branch<span class="ra">2017-Present</span>
                 <ul>
-                    <li>200 members. Organize meetings and special activities, bring professional speakers, and throw social and professional networking events. Lead club meetings and events.</li>
+                    <li>230 members</li>
+                    <li>Leading team of 6 Professional Delegates to provide professional development opportunities to members</li>
+                    <li>Leading fundraising for the organization. Yearly budget of over $10,000</li>
+                    <li>Organize events and conferences</li>
+                </ul>
+            </li>
+            <li><span class="name">Conference Chair</span>, SEDS/IEEE SpaceRace Conference<span class="ra">2016-Present</span>
+                <ul>
+                    <li>400 participants</li>
+                    <li>Raised $22,000 in funds for conference from corporate and academic sources</li>
+                    <li>Logistics involve venue preparation, sponsor coordination, food, prizes, and materials procurement</li>
+                    <li>Participant engagement efforts to create a strong academic, professional, and social event</li>
+                </ul>
+            </li>
+            <li><span class="name">President and Chair</span>, University of Pittsburgh IEEE student branch<span class="ra">2015-2016</span>
+                <ul>
+                    <li>70 members. Organize meetings and special activities, bring professional speakers, and throw social and professional networking events. Lead club meetings and events.</li>
                 </ul>
             </li>
             <li><span class="name">Organizer, Director of Design & Marketing</span>, SteelHacks<span class="ra">2015-2016</span>
@@ -300,15 +462,15 @@
                     <li>Helped raised over $40,000 for the event. Wrote and sent out marketing materials, found new sponsors by cold emailing, worked with sponsor companies to assist with their recruiting needs.</li>
                 </ul>
             </li>
-            <li><span class="name">Founder</span>, Pittsburgh Hacker Society<span class="ra">2015-2016</span>
+            <!--<li><span class="name">Founder</span>, Pittsburgh Hacker Society<span class="ra">2015-2016</span>
                 <ul>
                     <li>Organized monthly hackathons, taught technical workshops, and hosted group build nights.</li>
                     <li>Raised it from 0 to nearly 200 members, created a board and governing structure, organized and ran the first build nights, found sponsors for the team.</li>
                 </ul>
-            </li>
-            <li><span class="name">Outreach team lead</span>, Pitt Makerspace<span class="ra">2015-2016</span>
+            </li>-->
+            <li><span class="name">Outreach Team Lead</span>, Pitt Makerspace<span class="ra">2015-2016</span>
                 <ul>
-                    <li>Led a team to reach out to sponsors to raise funds for Pitt’s student-run makerspace.</li>
+                    <li>Led a team to reach out to sponsors and raise funds for Pitt’s student-run makerspace.</li>
                 </ul>
             </li>
         </ul>
@@ -317,7 +479,8 @@
     <div class="activities">
         <h2>ACTIVITIES AND SOCIETIES:</h2>
         <ul>
-            <li>Purdue IEEE Remote Operated Underwater Vehicle, Power Systems Team<span class="ra">2016-Present</span></li>
+            <li><span class="name">Dance Instructor</span>, Purdue West Coast Swing <span class="ra">2017-Present</span></li>
+            <li><span class="name">Power Systems Design Team</span>, Purdue IEEE Remote Operated Underwater Vehicle<span class="ra">2016-2017</span></li>
             <li>Active member in Hillel and Computer Science Club<span class="ra">2014-Present</span></li>
         </ul>
     </div>
@@ -327,7 +490,29 @@
     <div class="projects main">
         <h2>PERSONAL PROJECTS:</h2>
         <ul>
-            <li><span class="field">Electrical Eng.</span> <span class="name">ESP32 Breakout Development Platform</span>, Personal project in PCB design<span class="ra">2016</span>
+            <li><span class="field">Electrical Eng.</span> <span class="name">Mesh network based forest-fire prevention</span>, Senior Design Project<span class="ra">2017</span>
+                <ul>
+                    <li>Designed and implemented ad-hoc mesh network. Supports on-the-fly reordering and new connections, central analysis enables analysis of fire risk. Testing performed
+                    with software defined radios and logic analysers. Links are software defined and resilient to devices dropping unexpectedly. Designed message structure, PCB, network topology.
+                    Worked in a team of 4.</li>
+                    <li>
+                        <ul>
+                            <li>Tools used: Altium, SDR, STM32, C</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><span class="field">Electrical Eng.</span> <span class="name">1.44kW Robotics Power System</span>, Purdue IEEE Underwater Robotics<span class="ra">2016-2017</span>
+                <ul>
+                    <li>Using EAGLE, designed and architectured parallel power system capable of supplying 44V at 40A. Designed fully analog turn-on circuitry, regulator implementation, and DC-DC converter implementation.</li>
+                    <li>
+                        <ul>
+                            <li>Tools used: EAGLE, UART, USB 2.0, Linear Regulator, 0402 scale passive components</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <!--<li><span class="field">Electrical Eng.</span> <span class="name">ESP32 Breakout Development Platform</span>, Personal project in PCB design<span class="ra">2016</span>
                 <ul>
                     <li>Using KiCad, designed a breakout for brand new ESP32 module by Espressif. Features include serial interfacing over USB, power (5V->3.3V) management, breadboard compatible for easier prototyping and development.</li>
                     <li>
@@ -336,7 +521,7 @@
                         </ul>
                     </li>
                 </ul>
-            </li>
+            </li>-->
             
             <li><span class="field">CS</span> <span class="name">Electric Imp platform emulator</span>, Personal project in CS<span class="ra">2016</span>
                 <ul>
@@ -360,7 +545,7 @@
                 </ul>
             </li>
             
-            <li><span class="field">Electrical Eng.</span> <span class="name">BitBeats gloves</span>, Fashion\Tech Hackathon submission<span class="ra">2016</span>
+            <li><span class="field">Electrical Eng.</span> <span class="name">BitBeats gloves</span>, Fashion/Tech Hackathon submission<span class="ra">2016</span>
                 <ul>
                     <li>Designed and developed soft touch sensors entirely out of conductive fabric. The user drums on the table and the glove’s onboard Raspberry Pi computer generates realistic drumming sounds.</li>
                     <li>
