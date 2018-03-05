@@ -113,6 +113,26 @@
 
 <!-- STYLE 3: ROWS-->
 <style>
+.main .ra {
+    margin-right: 5pt;
+    width: 70pt;
+    text-align:left;
+    float: left;
+}
+
+.projects .ra {
+    width: 35pt;
+}
+
+.main>div>ul {
+    padding-left: 0;
+}
+
+.main>div>ul>li {
+    /*background: rgba(255,0,0,0.5);*/
+    margin-left: 70pt;
+}
+
 .addrlinks{
     display: block;
     float: right;
@@ -193,7 +213,7 @@ background: black;
             width: 612pt;
             min-width: 612pt;
             float: left;
-            height: 792pt;
+            height: 768pt;
             padding: 15pt 25pt;
             background: #fff;
             box-shadow: 5px 5px 30px #222;
@@ -203,7 +223,6 @@ background: black;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #444;
             flex-wrap: wrap;
         }
     }
@@ -212,17 +231,19 @@ background: black;
         .sheet{
             margin: 15pt 25pt;
             page-break-after: always;
+            
         }
         #options{
             display:none;
         }
         body{
-            /*margin: 8px;*/
+            background: #fff;
         }
     }
     
     @page{
         margin: 0;
+        background: #fff;
     }
 </style>
 <script>
@@ -324,27 +345,25 @@ document.styleSheets[2].disabled = true;
     </div>
     <div class="courses"><h3>Relevant Coursework:</h3>
         <ul>
-            <li>Microprocessors</li>
             <li>Digital Signals Processing</li>
+            <li>Image Processing and Classification</li>
             <li>Advanced C</li>
-            <li>Semiconductors</li>
-            <li>Electromagnetics</li>
-            <li>Computer Architecture</li>
+            <li>Embedded Design & Microprocessors</li>
         </ul>
     </div>
 </div>
 <div class="main">
     <div class="edu">
         <h2>EDUCATION:</h2>
-        <ul><li><span class="name">Purdue University</span>, West Lafayette, IN<span class="ra"></br></span>
+        <ul><!--<span class="ra">May 2019 (expected)</br></span><li><span class="name">Purdue University</span>, West Lafayette, IN
                 <ul>
                 <li><b>Master of Science in Electrical Engineering</b> - Communications, Networking, Signals and Image Processing</li>
                 </ul>
-            </li>
-            <li><span class="name">Purdue University</span>, West Lafayette, IN<span class="ra">Class of '17</br>GPA 3.51</span>
+            </li>-->
+            <span class="ra">Class of Dec. '17</br>GPA 3.51</span><li><span class="name">Purdue University</span>, West Lafayette, IN
                 <ul>
                 <li>Bachelor of Science in Electrical Engineering</li>
-                <li>1<sup>st</sup> place winner: ECE Senior Design Spark Challenge 2017</li>
+                <li>Grand Prize winner: Purdue Spark Challenge Embedded Design Competition 2017</li>
                 </ul>
             </li>
             <!--<li><span class="name">University of Pittsburgh</span>, Pittsburgh, PA<span class="ra">(September 2014 – April 2016)</span>
@@ -359,54 +378,70 @@ document.styleSheets[2].disabled = true;
     <div class="work">
         <h2>EXPERIENCE:</h2>
         <ul>
-            <li><span class="name">Purdue University</span> <span class="pos">Teaching Assistant - Intro to Python</span> <span class="ra">West Lafayette, IN: Jan. 2018 - Present</span>
+            <span class="ra">Jan. 2018 - Present</span><li><span class="name">Purdue University</span> <span class="pos">Graduate Teaching Assistant - Software Engineering in Python</span>
                 <ul>
                     <li></li>
                 </ul>
             </li>
-            <li><span class="name">Lockheed Martin Controls & Avionics Center of Excellence</span> <span class="pos">Electronics Intern</span> <span class="ra">Sunnyvale, CA: Summer 2017</span>
+            <span class="ra">Summer 2017</br>Sunnyvale, CA</span><li><span class="name">Lockheed Martin Controls & Avionics Center of Excellence</span> <span class="pos">Electronics Intern</span>
                 <ul>
-                    <li>Orion Launch Abort System Controller testing automation in Python and telemetry analysis in MATLAB</li>
+                    <li>Testing automation and telemetry analysis software in Python and MATLAB for Orion Launch Abort System</li>
                     <li>Motor driver and initiator design in Zuken CR8000, including block diagrams and rad-hard parts analysis</li>
                     <li>Cable design for motor valves testing and noise reduction</li>
                 </ul>
             </li>
-            <li><span class="name">Electric Imp</span> <span class="pos">Product Development Support</span> <span class="ra">Mountain View, CA (remote):  Sep. 2016 - Dec. 2016</span>
+            <span class="ra">Sep. 2016 - Dec. 2016</br>Mountain View, CA (remote)</span><li><span class="name">Electric Imp</span> <span class="pos">Product Development Support</span>
                         <ul>
-                            <li>Continuing work and responsibilities from previous internship</li>
-                            <li>Work with Product Development and Support teams to create new customer solutions</li>
+                            <!--<li>Continuing work and responsibilities from previous internship</li>-->
+                            <li>Worked with Product Development and Support teams to create customer solutions</li>
                             <li>Electrical (PCB, Altium Designer), Mechanical (Enclosures, Solidworks) design and modifications</li>
                         </ul>
             </li>
-            <li><span class="name">Electric Imp</span> <span class="pos">Maker in Residence (Hardware Intern)</span><span class="ra">Mountain View, CA:  Summer 2016</span>
+            <span class="ra">Summer 2016</br>Mountain View, CA</span><li><span class="name">Electric Imp</span> <span class="pos">Hardware Intern</span>
                         <ul>
-                            <li>Designed multi-layer PCBs in Altium, IoT sensor applications</li>
+                            <li>Designed multi-layer PCBs in Altium for IoT sensor applications</li>
                             <li>Designed new and modified existing enclosures using SolidWorks</li>
                             <li>Wrote firmware and application level code to interface with I2C, SPI, UART peripherals</li>
                             <li>Wrote server side code to parse and display data collected by sensor boards</li>
-                            <li>Designed new sensor node. Product now being manufactured and sold.</li>
+                            <li>Designed new IoT sensor node. Product now being manufactured and sold.</li>
                         </ul>
                     </li>
-            <li><span class="name">Zego Robotics</span> <span class="pos">3D Printing/Robotics Intern</span><span class="ra">Pittsburgh, PA:  Summer 2015</span>
+            <span class="ra">Summer 2015</br>Pittsburgh, PA</span><li><span class="name">Zego Robotics</span> <span class="pos">3D Printing/Robotics Intern</span>
                 <ul>
-                    <!--<li>Collaborated with engineers at the new product introduction phase to develop and verify design changes</li>-->
+                    <li>Collaborated with engineers at the new product introduction phase to develop and verify design changes</li>
                     <li>Designed a multi-color 3D printer nozzle in Autodesk Fusion</li>
                     <li>Wrote the printer’s interface to communicate with PC over USB</li>
                     <li>Designed and programmed UI for printer’s software in JavaScript</li>
                     <!--<li>Designed a manual-work-robot simulation in Unity3D, JavaScript and C#</li>-->
                 </ul>
             </li>
-            <li><span class="name">University of Pittsburgh Swanson School of Engineering</span> <span class="pos">IT intern</span><span class="ra">Pittsburgh, PA:  2014 – 2015</span></li>
+            <span class="ra">2014 – 2015</span><li><span class="name">University of Pittsburgh Swanson School of Engineering</span> <span class="pos">IT intern</span></li>
+        </ul>
+    </div>
+    <div class="srdesgn">
+        <h2>CAPSTONE PROJECT:</h2>
+        <ul>
+            <span class="ra">2017</span><li><span class="name">Mesh network based forest-fire prevention</span>, Senior Design Project - Grand Prize winner: Purdue Spark Challenge
+                <ul>
+                    <li>Designed and implemented ad-hoc mesh network, including custom PCB and firmware. Supports on-the-fly reordering and new connections, central analysis enables analysis of fire risk using classification methods.
+                    Links are software defined and resilient to devices dropping unexpectedly. Designed packet structure, PCB, network topology based on IEEE 802.15.4.</li>
+                    <li>
+                        <ul>
+                            <li>Tools used: Altium, SDR, STM32, C</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </div>
     <div class="research">
         <h2>RESEARCH:</h2>
         <ul>
-            <li><span class="name">Human Mission To Mars Conceptual Design</span>, Power Systems Team<span class="ra">Purdue University - 2017</span>
+            <span class="ra">Purdue University - 2017</span><li><span class="name">Human Mission To Mars Conceptual Design</span>, Power Systems Team
                 <ul>
                     <li>Under Dr. Sarag Saikia, researched and designed conceptual power systems for an evolvable mission to Mars</li>
                     <li>Identified technology readiness levels and possible technology readiness reductions</li>
-                    <li>Created block diagrams and power schedule analysis</li>
+                    <!--<li>Created block diagrams and power schedule analysis</li>-->
                     <li>Planned for entry-descent-landing restrictions and continuing growth of power needs</li>
                     <li><span class="name">Presented</span> the project and a Virtual Reality implementation of the engineered mission with Dr. Saikia at:
                         <ul>
@@ -418,7 +453,7 @@ document.styleSheets[2].disabled = true;
             </li>
         </ul>
         <ul>
-            <li><span class="name">3D Printed Steel in Nuclear Reactor Environments</span><span class="ra">University of Pittsburgh - 2015</span>
+            <span class="ra">University of Pittsburgh - 2015</span><li><span class="name">3D Printed Steel in Nuclear Reactor Environments</span>
                 <ul>
                     <li>Under Dr. Isaac Garcia, studyed the microstructure of 3D printed stainless steel and application in nuclear reactors</li>
                 </ul>
@@ -429,9 +464,9 @@ document.styleSheets[2].disabled = true;
     <div class="publication">
         <h2>PUBLICATIONS:</h2>
         <ul>
-            <li><span class="name">Exploration Systems Requirements to Establish a Sustainable Human Presence on Mars</span><span class="ra">AIAA Space - Sept. 2017</span>
+            <span class="ra">AIAA Space 2017</span><li><span class="name">Exploration Systems Requirements to Establish a Sustainable Human Presence on Mars</span>
                 <ul>
-                    <li>Elizabeth A. Marandola, Amy Comeau, Glynn Smith, Noah Gordon, Michael Weiss, <i>Reshef Elisha</i>, Steven A. Zusack, Benjamin Hilker, Kevin LeCaptian, L. Pablo Podesta, and Sarag J. Saikia
+                    <li>Elizabeth A. Marandola, Amy Comeau, Glynn Smith, Noah Gordon, Michael Weiss, <i><b>Reshef Elisha</b></i>, Steven A. Zusack, Benjamin Hilker, Kevin LeCaptian, L. Pablo Podesta, and Sarag J. Saikia
                     </li>
                 </ul>
             </li>
@@ -441,7 +476,7 @@ document.styleSheets[2].disabled = true;
     <div class="leadership">
         <h2>LEADERSHIP:</h2>
         <ul>
-            <li><span class="name">Industrial Relations Lead</span>, Purdue IEEE student branch<span class="ra">2017-Present</span>
+            <span class="ra">2017-2018</span><li><span class="name">Industrial Relations Lead</span>, Purdue IEEE student branch
                 <ul>
                     <li>230 members</li>
                     <li>Leading team of 6 Professional Delegates to provide professional development opportunities to members</li>
@@ -449,20 +484,20 @@ document.styleSheets[2].disabled = true;
                     <li>Organize events and conferences</li>
                 </ul>
             </li>
-            <li><span class="name">Conference Chair</span>, SEDS/IEEE SpaceRace Conference<span class="ra">2016-Present</span>
+            <!--<span class="ra">2016-Present</span><li><span class="name">Conference Chair</span>, SEDS/IEEE SpaceRace Conference
                 <ul>
                     <li>400 participants</li>
                     <li>Raised $22,000 in funds for conference from corporate and academic sources</li>
                     <li>Logistics involve venue preparation, sponsor coordination, food, prizes, and materials procurement</li>
                     <li>Participant engagement efforts to create a strong academic, professional, and social event</li>
                 </ul>
-            </li>
-            <li><span class="name">President and Chair</span>, University of Pittsburgh IEEE student branch<span class="ra">2015-2016</span>
+            </li>-->
+            <span class="ra">2015-2016</span><li><span class="name">President and Chair</span>, University of Pittsburgh IEEE student branch
                 <ul>
                     <li>70 members. Organize meetings and special activities, bring professional speakers, and throw social and professional networking events. Lead club meetings and events.</li>
                 </ul>
             </li>
-            <li><span class="name">Organizer, Director of Design & Marketing</span>, SteelHacks<span class="ra">2015-2016</span>
+            <span class="ra">2015-2016</span><li><span class="name">Organizer, Director of Design & Marketing</span>, SteelHacks
                 <ul>
                     <li>Pitt’s biggest hackathon and innovation competition with over 350 participants.</li>
                     <li>Led a team of students to design marketing and graphic identity.</li>
@@ -475,7 +510,7 @@ document.styleSheets[2].disabled = true;
                     <li>Raised it from 0 to nearly 200 members, created a board and governing structure, organized and ran the first build nights, found sponsors for the team.</li>
                 </ul>
             </li>-->
-            <li><span class="name">Outreach Team Lead</span>, Pitt Makerspace<span class="ra">2015-2016</span>
+            <span class="ra">2015-2016</span><li><span class="name">Outreach Team Lead</span>, Pitt Makerspace
                 <ul>
                     <li>Led a team to reach out to sponsors and raise funds for Pitt’s student-run makerspace.</li>
                 </ul>
@@ -486,9 +521,9 @@ document.styleSheets[2].disabled = true;
     <div class="activities">
         <h2>ACTIVITIES AND SOCIETIES:</h2>
         <ul>
-            <li><span class="name">Dance Instructor</span>, Purdue West Coast Swing <span class="ra">2017-Present</span></li>
-            <li><span class="name">Power Systems Design Team</span>, Purdue IEEE Remote Operated Underwater Vehicle<span class="ra">2016-2017</span></li>
-            <li>Active member in Hillel and Computer Science Club<span class="ra">2014-Present</span></li>
+            <span class="ra">2017-Present</span><li><span class="name">Dance Instructor</span>, Purdue West Coast Swing</li>
+            <span class="ra">2016-2017</span><li><span class="name">Power Systems Design Team</span>, Purdue IEEE Remote Operated Underwater Vehicle</li>
+            <!--<li>Active member in Hillel and Computer Science Club<span class="ra">2014-Present</span></li>-->
         </ul>
     </div>
 </div>
