@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no">
+
+<title>Same Scale</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/8.1.0/dist/ol.min.js" integrity="sha512-Lu3mKY4gbgocyIAil/7VhNwTSQuvpcLwDyaNz2yhCymG1GiV98pcRsfePdAK7EarOsKHtEMYjhrAt4brBu3HuQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/8.1.0/ol.min.css" integrity="sha512-m1KzXSAktfv5h68DmZQoSyYh/GDrNeblGi7wFHwoQV0Hyg8vHlo5yh+D7HnGtFYYYc4dzltbPC3WqIv303WulQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link href="https://cdn.jsdelivr.net/npm/ol-geocoder/dist/ol-geocoder.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/ol-geocoder/dist/ol-geocoder.js"></script>
+
+<style>
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    font-family: sans-serif;
+}
+
+body.column {
+    flex-direction: column;
+}
+
+#left, #right {
+    flex: 1;
+    position: relative;
+}
+
+#left-map, #right-map {
+    height: 100%;
+}
+
+#left-ghostcursor, #right-ghostcursor {
+    position: absolute;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    font-size: 150%;
+    opacity: 30%;
+    visibility: hidden;
+}
+
+body:not(.column) #left {
+    border-right: 1px solid black;
+}
+
+body.column #left {
+    border-bottom: 1px solid black;
+}
+
+.ol-geocoder.gcd-gl-container {
+    top: 0.5em;
+}
+
+.ol-zoom {
+    top: 3em;
+}
+
+#about {
+    position: absolute;
+    right: 0.5em;
+    top: 0.5em;
+    background-color: rgba(255,255,255,.4);
+    border-radius: 4px;
+    padding: 2px;
+}
+
+#about summary {
+    font-weight: bold;
+}
+
+#about details {
+    display: block;
+    margin: 1px;
+    padding: 0.5em;
+    color: #fff;
+    background-color: rgba(0,60,136,.5);
+    border: none;
+    border-radius: 2px;
+
+    font-size: 80%;
+    max-width: 200px;
+}
+
+#about div {
+    margin-top: 10px;
+}
+
+#about a {
+    color: #fff;
+}
+
+</style>
+
+<div id="left">
+    <div id="left-map"></div>
+    <div id="left-ghostcursor">○</div>
+</div>
+<div id="right">
+    <div id="right-map"></div>
+    <div id="right-ghostcursor">○</div>
+</div>
+
+<div id="about">
+    <details>
+        <summary>About</summary>
+        <div>As you pan and zoom, these maps maintain equal scales.</div>
+        <div>Use <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAABPUlEQVQoU41SwXHCQAzUHh58eoUOIBWEDkI6oAToIKkg7iAuwakgpAIowXRACcnrzp6BzchjMx4wE/S6kW5XK60gvQghzJIkmVoqSZI9gJ9+/fINS5Cc1HX9QXIlIr/tpwcRyb33b7cIGnAIYQdg4pxbjcfj0nJ1Xc+Px+PGObdN03Q9RIAQwgpAnqbp7FKmjQGgJLlU1d2V7BjjRkQO3vvXIXarkyxVNbsCm2QR2Q0V7XOMMReRmfd+OQQubN6hYgs22ZtbnRcAtiRfLueqqmpJ8ovko6oeBq0KIWQA3gFkzrlmMafTaUEyI/mpqmbhVTRWWbRdbClPbeobQNES5KPRqOxs7DBn8K1DsAOKMZYApiTXqlrcDe4d0XN7jWeCfzt351tVle2iGalTcBd4gGDvvZ/fDe4RmCOFLe8Pr7mvEP2N9PQAAAAASUVORK5CYII="> to fly to points of interest.</div>
+        <div>By <a href="http://joshuahhh.com/">Josh Horowitz</a>.</div>
+    </details>
+</div>
+
+<script>
+
+const sides = ['left', 'right'];
+const views = {};
+const maps = {};
+const ghostCursors = {};
+
+const scaleControl = new ol.control.ScaleLine();
+
+// Coordinates of the north of the Gaza strip
+const gazanorth_center = ol.proj.fromLonLat([34.48944, 31.56814]);
+
+var distances = [];
+
+// Visitor's coordinates:
+const start_coords = [-122.1457317, 37.2955051]
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(setPosition);
+
+    function setPosition(position) {
+        distances = towns_outside_cities.map((town) =>
+            // get distance to visitor coords
+            ol.sphere.getDistance(
+                ol.proj.transform(ol.proj.fromLonLat([position.coords.longitude, position.coords.latitude]), 'EPSG:3857', 'EPSG:4326'), 
+                ol.proj.transform(ol.proj.fromLonLat([town[1][1],town[1][0]]), 'EPSG:3857', 'EPSG:4326')
+            )
+        );
+
+        var dMin = Math.min(...distances.filter(Number.isFinite));
+        var closest_idx = distances.indexOf(dMin);
+        views['right'].setCenter(ol.proj.fromLonLat([towns_outside_cities[closest_idx][1][1],towns_outside_cities[closest_idx][1][0]]));
+    }
+}
+
+
+sides.forEach((side) => {
+    views[side] = new ol.View({
+        center: side == 'left' ? gazanorth_center : ol.proj.fromLonLat(start_coords),
+        zoom: 8,
+        enableRotation: false,
+    });
+
+    maps[side] = new ol.Map({
+        controls: [
+            new Geocoder('nominatim', {
+                provider: 'osm',
+                lang: 'en-US',
+                featureStyle: new ol.style.Style(),
+                autoComplete: true,
+            })
+        ],
+
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM({
+                    url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                }),
+            }),
+        ],
+
+        target: `${side}-map`,
+        view: views[side],
+
+        interactions: side == 'left' ? ol.interaction.defaults.defaults({
+            doubleClickZoom: false,
+            dragAndDrop: false,
+            dragPan: false,
+            keyboardPan: false,
+            keyboardZoom: false,
+            mouseWheelZoom: false,
+            pointer: false,
+            select: false
+        }) : ol.interaction.defaults.defaults(),
+    });
+
+    views[side].on('propertychange', () => {
+        const resolution = views[side].getResolution()
+        sides.forEach((otherSide) => {
+            if (otherSide !== side) {
+                const newResolution =
+                    resolution
+                    * Math.cos(ol.proj.toLonLat(views[side].getCenter())[1] / 180 * Math.PI)
+                    / Math.cos(ol.proj.toLonLat(views[otherSide].getCenter())[1] / 180 * Math.PI);
+                if (Math.abs(views[otherSide].getResolution() - newResolution) > 1e-6) {
+                    views[otherSide].setResolution(newResolution);
+                }
+            }
+        })
+    });
+
+    if (side === 'left') {
+        maps[side].addControl(new ol.control.Zoom());
+    }
+
+    ghostCursors[side] = document.getElementById(`${side}-ghostcursor`);
+    document.getElementById(side).addEventListener('mousemove', (e) => {
+        const bbox = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - bbox.left;
+        const y = e.clientY - bbox.top;
+        sides.forEach((otherSide) => {
+            if (otherSide !== side) {
+                ghostCursors[otherSide].style.visibility = 'visible';
+                ghostCursors[otherSide].style.left = `${x}px`;
+                ghostCursors[otherSide].style.top = `${y}px`;
+            }
+        });
+        ghostCursors[side].style.visibility = 'hidden';
+    });
+    document.getElementById(side).addEventListener('mouseout', (e) => {
+        sides.forEach((otherSide) => {
+            if (otherSide !== side) {
+                ghostCursors[otherSide].style.visibility = 'hidden';
+            }
+        });
+    });
+});
+
+// Add markers
+
+// Taken from: https://github.com/Viglino/ol-ext/blob/master/src/geom/sphere.js
+/** 
+ * Computes the destination point given an initial point, a distance and a bearing
+ * @See http://www.movable-type.co.uk/scripts/latlong.html for the original code
+ * @param {ol.coordinate} origin stating point in lonlat coords
+ * @param {number} distance
+ * @param {number} bearing bearing angle in radian
+ * @param {*} options
+ *  @param {booelan} normalize normalize longitude beetween -180/180, deafulet true
+ *  @param {number|undefined} options.radius sphere radius, default 6371008.8
+ */
+ var ol_sphere_computeDestinationPoint = function(origin, distance, bearing, options) {
+  options = options || {};
+  var toRad = Math.PI/180;
+  var radius = options.radius || 6371008.8;
+  bearing = toRad * bearing;
+
+  var phi1 = origin[1] * toRad;
+  var lambda1 = origin[0] * toRad;
+  var delta = distance / radius;
+
+  var phi2 = Math.asin(
+    Math.sin(phi1) * Math.cos(delta) +
+    Math.cos(phi1) * Math.sin(delta) * Math.cos(bearing)
+  );
+
+  var lambda2 = lambda1 +
+    Math.atan2(
+      Math.sin(bearing) * Math.sin(delta) * Math.cos(phi1),
+      Math.cos(delta) - Math.sin(phi1) * Math.sin(phi2)
+    );
+
+  var lon = lambda2 / toRad;
+  // normalise to >=-180 and <=180° 
+  if (options.normalize!==false && (lon < -180 || lon > 180)) {
+    lon = ((lon * 540) % 360) - 180;
+  }
+
+  return [ lon, phi2 / toRad ];
+};
+
+// Left: Israel Map
+
+function addRadii(map, center) {
+    // Standard distance radii for response times
+    [90000,60000,30000,20000,11000].forEach((radius, i) => {
+        // radius is in meters, convert to localized coordinate units
+        var edgeCoordinate = ol.proj.fromLonLat(ol_sphere_computeDestinationPoint(ol.proj.toLonLat(center), radius, 0, {}));//[center[0] + radius, center[1]];
+        var groundRadius = ol.sphere.getDistance(
+            ol.proj.transform(center, 'EPSG:3857', 'EPSG:4326'), 
+            ol.proj.transform(edgeCoordinate, 'EPSG:3857', 'EPSG:4326')
+        );
+
+        groundRadius *= 90/70 ; // Approximate distance fix, since EPSG:3857 is not a perfect sphere
+
+        var layer = new ol.layer.Vector({
+            source: new ol.source.Vector({
+                projection: 'EPSG:4326',
+                features: [new ol.Feature(new ol.geom.Circle(center, groundRadius))]
+            }),
+            style: [
+                new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'red',
+                    width: .1
+                }),
+                fill: new ol.style.Fill({
+                    color: 'rgba(255,'+ (255 - (i / 5 * 255) - 80) +', 0, 0.2)'
+                })
+                })
+            ]
+            });
+            map.addLayer(layer);
+    });
+}
+
+addRadii(maps['left'], gazanorth_center);
+
+
+// Right: Sports Stadiums
+const stadiums = [
+    ['Titans',          [-86.771289,    36.166461],     37213],
+    ['Giants',          [-74.076983,    40.812194],     10021],
+    ['Steelers',        [-80.015761,    40.446786],     15202],
+    ['Panthers',        [-80.852861,    35.225808],     28202],
+    ['Ravens',          [-76.622767,    39.277969],     21203],
+    ['Buccaneers',      [-82.50335,     27.975967],      33607],
+    ['Colts',           [-86.163806,    39.760056],     46201],
+    ['Vikings',         [-93.258094,    44.973881],     56760],
+    ['Cardinals',       [-112.262608,   33.5277],      63102],
+    ['Cowboys',         [-97.092778,    32.747778],     75203],
+    ['Falcons',         [-84.400972,    33.757614],     30303],
+    ['Jets',            [-74.076983,    40.812194],     10001],
+    ['Broncos',         [-105.020097,   39.743936],    28037],
+    ['Dolphins',        [-80.238842,    25.957919],     33102],
+    ['Eagles',          [-75.167453,    39.900775],     19092],
+    ['Bears',           [-87.616672,    41.862306],     60602],
+    ['Patriots',        [-71.26435,     42.090925],      58647],
+    // ['Redskins',        [-76.864517,    38.907697],     20575],
+    ['Packers',         [-88.062167,    44.501306],     54301],
+    ['Chargers',        [-117.119525,   32.783117],    92103],
+    ['Saints',          [-90.081364,    29.950931],     70112],
+    ['Texans',          [-95.410956,    29.684781],     77002],
+    ['Bills',           [-78.786978,    42.773739],     14202],
+    ['Forty-Niners',    [-122.386256,   37.713486],    94102],
+    ['Jaguars',         [-81.637356,    30.323925],     32099],
+    ['Browns',          [-81.699564,    41.506022],     44114],
+    // ['Raiders',         [-122.200889,   37.751411],    94502],
+    ['Chiefs',          [-94.484039,    39.048914],     66027],
+    ['Rams',            [-90.188547,    38.632975],     63101],
+    ['Seahawks',        [-122.331625,   47.595153],    98102],
+    ['Bengals',         [-84.516039,    39.095442],     45202],
+    ['Lions',           [-83.045808,    42.340156],     48205],
+];
+
+// Note: coordinates are in LatLon, as it's gmaps' default
+const towns_outside_cities = [
+    ['Tacoma',              [47.2491379,    -122.62163]],
+    ['San Jose',            [37.2961211,-121.9809032]],
+    ['Riverside',           [33.9460155,    -117.399528]],
+    ['Chandler, AZ',        [33.2827088,    -112.0286599]],
+    ['Boulder, CO',         [40.0292807,    -105.3223777]],
+    ['Fort Worth, TX',      [32.8003812,    -97.6189575]],
+    ['Galveston, TX',       [29.2334021,-94.9557133]], // Houston
+    ['St. Paul Airport',    [44.8849383,-93.2156981]], // Minneapolis
+    ['Appleton, WI',        [44.2876604,-88.4750058]], // Green Bay
+    ['Gary, IN',            [41.5886684,-87.3690371]], // Chicago
+    ['Bloomington, IN',     [39.1690671,-86.5461718]], // Indianapolis
+    ['Dayton, OH',          [39.8114311,-84.2845566]], // Columbus/Cincinnati
+    ['Franklin,+TN',        [35.9055254,-86.8891396]], // Nashville
+    ['Ann+Arbor,+MI',       [42.2733765,-83.7788886]],, // Detroit
+    ['Akron,+OH',           [41.0844244,-81.5541771]],  // Cleveland
+    ['Niagara+Falls,+NY',   [43.099535,-79.029341]], // Buffalo
+    ['Gainesville,+GA',     [34.2920984,-83.8688367]],
+    ['Boca+Raton,+FL',      [26.3728664,-80.1379649]],  // Miami
+    ['Stamford,+CT',        [41.071672,-73.6468952]],    // NYC
+    ['Providence,+RI',      [41.8169163,-71.4417799]],
+    ['Elkton,+MD+21921',    [39.6094222,-75.8426624]],  // Philly+Baltimore
+    ['Salisbury,+NC',       [35.6799951,-80.5728577]],  // Charlotte
+    // [Harrisburg,+PA/@40.2731911,-76.8867008
+];
+
+towns_outside_cities.forEach((town) => {
+    addRadii(maps['right'], ol.proj.fromLonLat([town[1][1], town[1][0]]));
+});
+
+function onResize() {
+    if (window.innerWidth < window.innerHeight) {
+        document.body.classList.add('column');
+        scaleControl.setMap(maps['right']);
+    } else {
+        document.body.classList.remove('column');
+        scaleControl.setMap(maps['left']);
+    }
+    maps['left'].updateSize()
+    maps['right'].updateSize()
+}
+window.addEventListener('resize', onResize);
+onResize();
+
+</script>
