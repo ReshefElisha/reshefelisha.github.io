@@ -22,6 +22,7 @@
 <link href="https://cdn.jsdelivr.net/npm/ol-geocoder/dist/ol-geocoder.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/ol-geocoder/dist/ol-geocoder.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <style>
 html, body {
@@ -165,6 +166,16 @@ html, body {
     padding: 0;
 }
 
+#whatif p {
+    margin: 0;
+    padding: 0;
+}
+
+#shareBtn {
+    font-size: 50%;
+    text-decoration: underline;
+}
+
 </style>
 </head>
 
@@ -191,6 +202,7 @@ html, body {
 
 <div id="whatif">
     <p>If Hamas was in <b id="nearest">$near</b> you'd have <b id="responseTime"># min</b> to find shelter.</p>
+    <a id="shareBtn">Share</a>
 </div>
 
 <div id="info">
@@ -651,6 +663,42 @@ onResize();
 
 info.addEventListener('click', () => {
     info.style.display = 'none';
+});
+
+shareBtn.addEventListener('click', () => {    
+    // iife here
+    ;(async () => {
+        if (!('share' in navigator)) {
+            return
+        }
+
+        shareBtn.style.display = 'none';
+        // `element` is the HTML element you want to share.
+        // `backgroundColor` is the desired background color.
+        const canvas = await html2canvas(document.body)
+        shareBtn.style.display = 'inline';
+        canvas.toBlob(async (blob) => {
+          // Even if you want to share just one file you need to
+          // send them as an array of files.
+          const files = [new File([blob], 'image.png', { type: blob.type })]
+          const shareData = {
+            text: '',
+            title: 'Same Scale',
+            files,
+          }
+          if (navigator.canShare(shareData)) {
+            try {
+              await navigator.share(shareData)
+            } catch (err) {
+              if (err.name !== 'AbortError') {
+                console.error(err.name, err.message)
+              }
+            }
+          } else {
+            console.warn('Sharing not supported', shareData)
+          }
+        })
+      })()
 });
 
 </script>
