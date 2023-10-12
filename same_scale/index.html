@@ -680,11 +680,9 @@ shareBtn.addEventListener('click', () => {
         canvas.toBlob(async (blob) => {
           // Even if you want to share just one file you need to
           // send them as an array of files.
-          const files = [new File([blob], 'image.png', { type: blob.type })]
+          const image = [new File([blob], 'image.png', { type: blob.type })]
           const shareData = {
-            text: '',
-            title: 'Same Scale',
-            files,
+            files: image,
           }
           if (navigator.canShare(shareData)) {
             try {
