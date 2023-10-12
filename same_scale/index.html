@@ -172,7 +172,7 @@ html, body {
 }
 
 #shareBtn {
-    font-size: 50%;
+    font-size: 70%;
     text-decoration: underline;
 }
 
@@ -672,11 +672,12 @@ shareBtn.addEventListener('click', () => {
             return
         }
 
-        shareBtn.style.display = 'none';
+        shareBtnInnerHTML = shareBtn.innerHTML;
+        shareBtn.innerHTML= 'reshef.io/same_scale';
         // `element` is the HTML element you want to share.
         // `backgroundColor` is the desired background color.
         const canvas = await html2canvas(document.body)
-        shareBtn.style.display = 'inline';
+        shareBtn.innerHTML = shareBtnInnerHTML;
         canvas.toBlob(async (blob) => {
           // Even if you want to share just one file you need to
           // send them as an array of files.
