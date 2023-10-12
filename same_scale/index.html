@@ -181,7 +181,7 @@ html, body {
     <div id="right-map"></div>
     <div id="about">
         <details>
-            <summary>How fast should you shelter?</summary>
+            <summary>FIND YOUR LOCATION</summary>
             <div>Search for a location, or hit the "locate" button, to find out how long it would take for a Hamas rocket to reach your home.</div>
             <div>By <a href="http://reshef.io">Reshef Elisha</a>, using "Same Scale" map by <a href="http://joshuahhh.com/">Josh Horowitz (not affiliated)</a>.</div>
         </details>
@@ -194,9 +194,8 @@ html, body {
 </div>
 
 <div id="info">
-    <h1>How long would you have?</h1>
     <h2>If Hamas fired rockets at your location, how long would you have to find shelter?</h2>
-    <p>Pan, zoom, or search for your location to understand what Israelis live with every day.</p>
+    <p><b>Pan, zoom, or search for your location to understand what Israelis live with every day.</b></p>
     <p><em>click/tap to dismiss</em></p>
 </div>
 </div>
@@ -529,6 +528,45 @@ function addRadii(map, center) {
 }
 
 addRadii(maps['left'], gazanorth_center);
+
+var radiusTextStyle = new ol.style.Style({
+    text: new ol.style.Text({
+        font: '8pt sans-serif',
+        overflow: true,
+        fill: new ol.style.Fill({
+            color: '#000'
+        }),
+        // stroke: new ol.style.Stroke({
+        //     color: '#fff',
+        //     width: 3
+        // }),
+        offsetY: -12
+    })
+});
+var radiusMarkerStyle = [null, radiusTextStyle];
+
+// add response times as markers for each radius on left map
+tzeva_adom_zmanim.forEach((radius_and_time, i) => {
+    radius = radius_and_time[0] * 1000;
+    // radius is in meters, convert to localized coordinate units
+
+    var layer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            features: [
+                new ol.Feature({
+                    geometry: new ol.geom.Point(ol.proj.fromLonLat(ol_sphere_computeDestinationPoint(ol.proj.toLonLat(gazanorth_center), radius, -30, {}))),
+                    name: radius_and_time[1],
+                })
+            ]
+        }),
+        style: function(feature) {
+            radiusTextStyle.getText().setText(feature.get('name'));
+            return radiusTextStyle;
+        },
+        zIndex: 6,
+    });
+    maps['left'].addLayer(layer);
+});
 
 
 // Right: Sports Stadiums
