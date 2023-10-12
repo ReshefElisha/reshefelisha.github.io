@@ -50,13 +50,8 @@ html, body {
     height: 100%;
 }
 
-#left-ghostcursor, #right-ghostcursor {
-    position: absolute;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    font-size: 150%;
-    opacity: 30%;
-    visibility: hidden;
+#right {
+    flex: 1.5;
 }
 
 #mapsContainer:not(.column) #left {
@@ -69,10 +64,6 @@ html, body {
 
 .ol-geocoder.gcd-gl-container {
     top: 0.5em;
-}
-
-.ol-zoom {
-    top: 3em;
 }
 
 #about {
@@ -143,7 +134,7 @@ html, body {
     right: 0;
     background-color: rgba(128,0,0,.8);
     color: #fff;
-    padding: 1em;
+    padding: .5em;
     text-align: center;
     font-size: 120%;
     max-height: 30vh;
@@ -172,12 +163,9 @@ html, body {
 <div id="mapsContainer">
 <div id="left">
     <div id="left-map"></div>
-    <div id="left-ghostcursor">○</div>
 </div>
 <div id="right">
     <div id="right-map"></div>
-    <div id="right-ghostcursor">○</div>
-    
     <div id="about">
         <details>
             <summary>How fast should you shelter?</summary>
@@ -205,7 +193,6 @@ html, body {
 const sides = ['left', 'right'];
 const views = {};
 const maps = {};
-const ghostCursors = {};
 
 const scaleControl = new ol.control.ScaleLine();
 
@@ -445,32 +432,6 @@ sides.forEach((side) => {
                 }
             }
         })
-    });
-
-    if (side === 'left') {
-        maps[side].addControl(new ol.control.Zoom());
-    }
-
-    ghostCursors[side] = document.getElementById(`${side}-ghostcursor`);
-    document.getElementById(side).addEventListener('mousemove', (e) => {
-        const bbox = e.currentTarget.getBoundingClientRect();
-        const x = e.clientX - bbox.left;
-        const y = e.clientY - bbox.top;
-        sides.forEach((otherSide) => {
-            if (otherSide !== side) {
-                ghostCursors[otherSide].style.visibility = 'visible';
-                ghostCursors[otherSide].style.left = `${x}px`;
-                ghostCursors[otherSide].style.top = `${y}px`;
-            }
-        });
-        ghostCursors[side].style.visibility = 'hidden';
-    });
-    document.getElementById(side).addEventListener('mouseout', (e) => {
-        sides.forEach((otherSide) => {
-            if (otherSide !== side) {
-                ghostCursors[otherSide].style.visibility = 'hidden';
-            }
-        });
     });
 });
 
