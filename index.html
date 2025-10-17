@@ -1,19 +1,1039 @@
-<html>
-    <head>
-        <title>Reshef Elisha</title>
-        <style>
-            body {
-                background-color: #fff;
-                color: #000;
-                font-family: sans-serif;
-                font-size: 20px;
-                text-align: center;
-                margin: 0;
-                padding: 0;
-            }
-        </style>
-    </head>
-    <body>
-        Reshef Elisha
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2D Lego Builder — Fixed Alignment and Snap</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+    html, body { 
+      margin: 0; 
+      height: 100%; 
+      overflow: hidden; 
+      background: 
+        radial-gradient(circle, rgba(200, 220, 255, 0.3) 1px, transparent 1px),
+        radial-gradient(circle, rgba(200, 220, 255, 0.3) 1px, transparent 1px),
+        linear-gradient(135deg, #E8F4FF 0%, #FFF5E8 100%);
+      background-size: 20px 20px, 20px 20px, 100% 100%;
+      background-position: 0 0, 10px 10px, 0 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    #ui { 
+      position: absolute; 
+      top: 10px; 
+      left: 10px; 
+      z-index: 10; 
+      display: flex; 
+      gap: 6px; 
+      flex-wrap: wrap; 
+      max-width: 140px;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
+    }
+    
+    /* Mobile: horizontal scrollable bar at top */
+    @media (max-width: 768px) {
+      #ui {
+        top: 10px;
+        left: 0;
+        right: 0;
+        bottom: auto;
+        transform: none;
+        max-width: none;
+        width: 100%;
+        padding: 0 10px;
+        gap: 8px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        justify-content: flex-start;
+        /* Hide scrollbar but keep functionality */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE/Edge */
+      }
+      #ui::-webkit-scrollbar {
+        display: none; /* Chrome/Safari */
+      }
+    }
+    
+    .brick-button { 
+      cursor: pointer; 
+      border-radius: 12px; 
+      border: 2px solid rgba(255,255,255,0.8); 
+      background: linear-gradient(145deg, #ffffff, #f5f5f5);
+      padding: 6px;
+      flex-shrink: 0; /* Prevent buttons from shrinking on mobile */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .brick-button:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      border-color: rgba(100,150,255,0.5);
+    }
+    .brick-button:active {
+      transform: translateY(-1px) scale(1.02);
+    }
+    .brick-canvas {
+      width: 40px;
+      height: 40px;
+      display: block;
+      border-radius: 8px;
+    }
+    .brick-label {
+      font-size: 10px;
+      color: #555;
+      font-weight: 600;
+      text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+    }
+    #welcome-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #d5ebff44 0%, #fce9d044 100%);
+      cursor: pointer;
+      transition: opacity 0.8s ease-out;
+    }
+    #welcome-overlay.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+    #welcome-overlay h1 {
+      font-family: 'Inter', sans-serif;
+      font-size: 48px;
+      font-weight: 700;
+      color: #2c3e50;
+      margin: 0 0 20px 0;
+      text-align: center;
+      letter-spacing: -0.02em;
+    }
+    #welcome-overlay p {
+      font-family: 'Inter', sans-serif;
+      font-size: 24px;
+      font-weight: 400;
+      color: #5a6c7d;
+      margin: 0 0 10px 0;
+      text-align: center;
+      line-height: 1.6;
+    }
+    #welcome-overlay p:last-child {
+      font-size: 20px;
+      color: #7a8c9d;
+      font-style: italic;
+    }
+    
+    /* Mobile: smaller text */
+    @media (max-width: 768px) {
+      #welcome-overlay h1 {
+        font-size: 32px;
+        padding: 0 20px;
+      }
+      #welcome-overlay p {
+        font-size: 18px;
+        padding: 0 20px;
+      }
+      #welcome-overlay p:last-child {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="welcome-overlay">
+    <h1>Reshef's personal site</h1>
+    <p>... is still under construction</p>
+    <p>but you can help build it!</p>
+  </div>
+  <div id="ui"></div>
+  <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+  <script>
+  /*
+   * 2.5D LEGO Builder
+   * 
+   * Features:
+   * - Smart snapping: checks all bottom studs to find best attachment point
+   * - Brick dragging: pick and move bricks with all dependent bricks
+   * - Particle effects: visual feedback when placing bricks
+   * - 2.5D perspective camera with panning support
+   * - PBR materials with three-point lighting
+   * - Animated 3D preview buttons
+   */
+  
+  // ============================================================================
+  // CONFIGURATION
+  // ============================================================================
+  
+  // Brick dimensions (in world units)
+  const STUD = 16;
+  const STUD_H = STUD * 0.3;
+  const BRICK_DEPTH = STUD * 0.8;
+  const PARTICLE_COUNT = 15;
+
+  // Vibrant, fun LEGO-style colors
+  const COLORS = [
+    0xFF0000, // Bright Red
+    0xFF9700, // Orange
+    0xFFFF00, // Yellow
+    0x0055BF, // LEGO Blue
+    0x00BFFF, // Sky Blue
+    0x00A650, // Bright Green
+    0x32CD32, // Lime Green
+    0xA83D9B, // Purple/Magenta
+    0xFF1493, // Hot Pink
+
+    // 0xFFD700, // Gold/Yellow
+    // 0xFF4500, // Red-Orange
+    // 0x9400D3, // Dark Violet
+  ];
+  const randColor = () => COLORS[Math.floor(Math.random()*COLORS.length)];
+
+  // Available brick types
+  const CATALOG = [
+    {w:1,h:1}, {w:2,h:1}, {w:3,h:1}, {w:4,h:1},
+    {w:1,h:2}, {w:2,h:2}, {w:3,h:2}, {w:4,h:2}
+  ];
+
+  // ============================================================================
+  // SCENE SETUP
+  // ============================================================================
+  
+  // Renderer with shadows and tone mapping
+  const renderer = new THREE.WebGLRenderer({antialias:true,alpha:false});
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.2;
+  document.body.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xE8F4FF);
+  scene.fog = new THREE.Fog(0xE8F4FF, 800, 2000);
+  
+  // Perspective camera for 2.5D effect
+  // Use viewport-dependent Y position: higher on mobile/portrait to avoid UI overlap
+  const isMobile = window.innerWidth <= 768;
+  const isPortrait = window.innerHeight > window.innerWidth;
+  const initialCameraY = (isMobile || isPortrait) ? 300 : 200;
+  
+  const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 10000);
+  camera.position.set(0, initialCameraY, 800);
+  camera.lookAt(0, initialCameraY, 0);
+  
+  // Three-point lighting setup
+  const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.5);
+  scene.add(ambientLight);
+  
+  // Main directional light (sun)
+  const dirLight = new THREE.DirectionalLight(0xFFFAF0, 1.5);
+  dirLight.position.set(500, 800, 600);
+  dirLight.castShadow = true;
+  dirLight.shadow.mapSize.width = 2048;
+  dirLight.shadow.mapSize.height = 2048;
+  dirLight.shadow.camera.near = 0.5;
+  dirLight.shadow.camera.far = 2000;
+  dirLight.shadow.camera.left = -500;
+  dirLight.shadow.camera.right = 500;
+  dirLight.shadow.camera.top = 500;
+  dirLight.shadow.camera.bottom = -500;
+  dirLight.shadow.bias = -0.0001;
+  scene.add(dirLight);
+  
+  // Fill light from opposite side
+  const fillLight = new THREE.DirectionalLight(0xB8E0FF, 0.4);
+  fillLight.position.set(-300, 200, -400);
+  scene.add(fillLight);
+  
+  // Subtle rim light
+  const rimLight = new THREE.DirectionalLight(0xFFE8D0, 0.3);
+  rimLight.position.set(0, -300, 800);
+  scene.add(rimLight);
+
+  const groundGroup = new THREE.Group();
+  scene.add(groundGroup);
+
+  // ============================================================================
+  // STATE
+  // ============================================================================
+  
+  // Camera panning
+  const cameraTarget = new THREE.Vector3(0, initialCameraY, 0);
+  let isPanning = false;
+  let panStart = new THREE.Vector2();
+  let panDelta = new THREE.Vector2();
+
+  // Brick management
+  const worldBricks = [];
+  
+  // Particle system
+  const particles = [];
+  
+  // Dragging state
+  let dragging = null;
+  let draggedBrickGroup = null;
+  const pointer = {x: 0, y: 0};
+  let isSpawningNewBrick = false; // Track if we're spawning from UI button
+  
+  // UI preview animations
+  const previewAnimations = [];
+
+  // ============================================================================
+  // GROUND RENDERING
+  // ============================================================================
+
+  // Draw ground studs visible in the camera's view
+  function drawGround() {
+    groundGroup.clear();
+    
+    const studMat = new THREE.MeshStandardMaterial({ 
+      color: 0xD0D8E0,
+      roughness: 0.7,
+      metalness: 0.05
+    });
+    const studGeom = new THREE.BoxGeometry(STUD * 0.7, STUD_H, 2);
+    
+    // Calculate visible range based on camera position and FOV
+    const vFOV = camera.fov * Math.PI / 180;
+    const height = 2 * Math.tan(vFOV / 2) * camera.position.z;
+    const width = height * camera.aspect;
+    const left = Math.floor((cameraTarget.x - width/2) / STUD) - 4;
+    const right = Math.ceil((cameraTarget.x + width/2) / STUD) + 4;
+    
+    // Create ground studs within visible range
+    for (let x = left; x <= right; x++) {
+      const s = new THREE.Mesh(studGeom, studMat);
+      s.position.set(x * STUD + STUD/2, -STUD_H/2, 0);
+      s.receiveShadow = true;
+      groundGroup.add(s);
+    }
+  }
+
+  // Handle window resize
+  function fit() {
+    camera.aspect = innerWidth / innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+    drawGround();
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  // ============================================================================
+  // BRICK CREATION
+  // ============================================================================
+
+  // Create a 3D mesh for a brick with given width, height, and color
+  function makeBrickMesh(w, h, color){
+    const group = new THREE.Group();
+    
+    // Main brick body with PBR material
+    const bodyGeom = new THREE.BoxGeometry(w * STUD, h * STUD, BRICK_DEPTH);
+    const bodyMat = new THREE.MeshStandardMaterial({
+      color: color,
+      roughness: 0.3,
+      metalness: 0.1,
+      envMapIntensity: 0.5,
+      flatShading: false
+    });
+    const body = new THREE.Mesh(bodyGeom, bodyMat);
+    body.position.y = h * STUD/2 - STUD_H/2;
+    body.castShadow = true;
+    body.receiveShadow = true;
+    group.add(body);
+    
+    // Add edge highlighting for better visual definition
+    const edges = new THREE.EdgesGeometry(bodyGeom, 15);
+    const lineMat = new THREE.LineBasicMaterial({ 
+      color: new THREE.Color(color).multiplyScalar(0.35),
+      transparent: true,
+      opacity: 0.4,
+      linewidth: 1
+    });
+    const edgeLines = new THREE.LineSegments(edges, lineMat);
+    edgeLines.position.copy(body.position);
+    group.add(edgeLines);
+
+    // Create top studs (one per width unit)
+    const studHeight = STUD_H;
+    const studGeom = new THREE.CylinderGeometry(STUD * 0.35, STUD * 0.35, studHeight, 16);
+    const studMat = new THREE.MeshStandardMaterial({
+      color: color,
+      roughness: 0.25,
+      metalness: 0.15,
+      flatShading: false
+    });
+    
+    for(let i = 0; i < w; i++){
+      const stud = new THREE.Mesh(studGeom, studMat);
+      stud.position.set((i - (w/2 - 0.5)) * STUD, h * STUD - STUD_H/2, 0);
+      stud.castShadow = true;
+      stud.receiveShadow = true;
+      group.add(stud);
+    }
+    
+    return group;
+  }
+
+  // ============================================================================
+  // SNAPPING LOGIC
+  // ============================================================================
+
+  // Get all top stud positions from placed bricks
+  function topStuds(){
+    const studs = [];
+    for(const b of worldBricks){
+      for(let i = 0; i < b.w; i++) {
+        studs.push({x: b.gx + i, y: b.gy + b.h});
+      }
+    }
+    return studs;
+  }
+
+  // Find nearest attachment point by checking all bottom studs against all attach points
+  function nearestAttach(gx, gy, w){
+    const studs = topStuds();
+    const attachPoints = [];
+    
+    // Add all existing top studs as attachment points
+    studs.forEach(s => attachPoints.push(s));
+    
+    // Add ground attachment points for each X position under the brick
+    for(let x = gx; x < gx + w; x++) {
+      attachPoints.push({x: x, y: 0});
+    }
+    
+    if(attachPoints.length === 0) return {x: gx, y: 0}; // Fallback
+    
+    // Generate all bottom studs of the dragging brick (relative to gx)
+    const bottomStuds = [];
+    for(let i = 0; i < w; i++) {
+      bottomStuds.push({
+        x: gx + i, 
+        y: gy, 
+        offset: i  // Tracks which stud this is (0 = leftmost)
+      });
+    }
+    
+    // Find the closest attachment point to any bottom stud using Euclidean distance
+    let minDist = Infinity;
+    let bestAttach = null;
+    let bestBottomStud = null;
+    
+    for(const bottomStud of bottomStuds) {
+      for(const attach of attachPoints) {
+        const dx = bottomStud.x - attach.x;
+        const dy = bottomStud.y - attach.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        
+        if(dist < minDist) {
+          minDist = dist;
+          bestAttach = attach;
+          bestBottomStud = bottomStud;
+        }
+      }
+    }
+    
+    // Calculate the brick's final grid position based on which bottom stud is attaching
+    const finalGx = bestAttach.x - bestBottomStud.offset;
+    
+    return {x: finalGx, y: bestAttach.y};
+  }
+
+  // Find highest Y position for a brick at given grid X position and width
+  function highestAttachY(gx, w){
+    let best = 0;
+    const studs = topStuds();
+    for(let x = gx; x < gx + w; x++){
+      const hits = studs.filter(s => s.x === x);
+      if(hits.length) {
+        best = Math.max(best, Math.max(...hits.map(h => h.y)));
+      }
+    }
+    return best;
+  }
+
+  // Check if a brick would overlap with any existing bricks
+  function overlaps(gx, gy, w, h){
+    for(const b of worldBricks){
+      if(gx < b.gx + b.w && gx + w > b.gx && gy < b.gy + b.h && gy + h > b.gy) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // ============================================================================
+  // PARTICLE SYSTEM
+  // ============================================================================
+  
+  class Particle {
+    constructor(x, y, z, color) {
+      this.velocity = new THREE.Vector3(
+        (Math.random() - 0.5) * 8,
+        Math.random() * 10 + 5,
+        (Math.random() - 0.5) * 8
+      );
+      this.life = 1.0;
+      this.decay = 0.02;
+      
+      const geom = new THREE.SphereGeometry(1.5, 8, 8);
+      const mat = new THREE.MeshStandardMaterial({ 
+        color: color,
+        emissive: color,
+        emissiveIntensity: 0.5,
+        roughness: 0.3,
+        metalness: 0.2
+      });
+      this.mesh = new THREE.Mesh(geom, mat);
+      this.mesh.position.set(x, y, z);
+      scene.add(this.mesh);
+    }
+    
+    update() {
+      this.velocity.y -= 0.5; // gravity
+      this.mesh.position.add(this.velocity);
+      this.life -= this.decay;
+      this.mesh.material.opacity = this.life;
+      this.mesh.material.transparent = true;
+      this.mesh.scale.setScalar(this.life);
+      return this.life > 0;
+    }
+    
+    destroy() {
+      scene.remove(this.mesh);
+      this.mesh.geometry.dispose();
+      this.mesh.material.dispose();
+    }
+  }
+  
+  function spawnParticles(x, y, z, color, count = 15) {
+    for(let i = 0; i < count; i++) {
+      particles.push(new Particle(x, y, z, color));
+    }
+  }
+  
+  function updateParticles() {
+    for(let i = particles.length - 1; i >= 0; i--) {
+      if(!particles[i].update()) {
+        particles[i].destroy();
+        particles.splice(i, 1);
+      }
+    }
+  }
+
+  // ============================================================================
+  // BRICK MANAGEMENT
+  // ============================================================================
+
+  // Place a brick in the world and add it to worldBricks array
+  function place(gx, gy, w, h, color){
+    const mesh = makeBrickMesh(w, h, color);
+    mesh.position.set((gx + w/2) * STUD, gy * STUD, STUD);
+    scene.add(mesh);
+    worldBricks.push({gx, gy, w, h, mesh, color});
+    
+    // Spawn particles at brick position for visual feedback
+    const particleX = (gx + w/2) * STUD;
+    const particleY = gy * STUD + (h * STUD / 2);
+    const particleZ = STUD;
+    spawnParticles(particleX, particleY, particleZ, color, PARTICLE_COUNT);
+  }
+
+  // Find all bricks that depend on a given brick (recursively find stacked bricks)
+  function getDependentBricks(brick, visited = new Set()) {
+    if(visited.has(brick)) return [];
+    visited.add(brick);
+    
+    const dependent = [];
+    const brickTopY = brick.gy + brick.h;
+    
+    // Find bricks that are directly on top of this brick
+    for(const other of worldBricks) {
+      if(other === brick || visited.has(other)) continue;
+      
+      // Check if other brick is sitting on top of this brick
+      if(other.gy === brickTopY) {
+        // Check if there's horizontal overlap
+        const hasOverlap = other.gx < brick.gx + brick.w && other.gx + other.w > brick.gx;
+        if(hasOverlap) {
+          dependent.push(other);
+          // Recursively find bricks on top of this one
+          dependent.push(...getDependentBricks(other, visited));
+        }
+      }
+    }
+    
+    return dependent;
+  }
+
+  // Remove bricks and their meshes from the world
+  function removeBricks(bricks) {
+    for(const brick of bricks) {
+      scene.remove(brick.mesh);
+      const idx = worldBricks.indexOf(brick);
+      if(idx !== -1) {
+        worldBricks.splice(idx, 1);
+      }
+    }
+  }
+
+  // ============================================================================
+  // INTERACTION HANDLERS
+  // ============================================================================
+
+  // Convert pointer event to world coordinates (on z=0 plane)
+  function toWorld(e){
+    const r = renderer.domElement.getBoundingClientRect();
+    const cx = (e.clientX ?? e.touches[0].clientX) - r.left;
+    const cy = (e.clientY ?? e.touches[0].clientY) - r.top;
+    const x = (cx / r.width) * 2 - 1;
+    const y = -(cy / r.height) * 2 + 1;
+    
+    // Create a raycaster to find the intersection with z=0 plane
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(new THREE.Vector2(x, y), camera);
+    
+    // Intersect with the z=0 plane
+    const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+    const intersect = new THREE.Vector3();
+    raycaster.ray.intersectPlane(plane, intersect);
+    
+    return {x: intersect.x, y: intersect.y};
+  }
+
+  // Get pointer position in screen coordinates
+  function getPointerPos(e) {
+    const r = renderer.domElement.getBoundingClientRect();
+    const cx = (e.clientX ?? e.touches[0].clientX) - r.left;
+    const cy = (e.clientY ?? e.touches[0].clientY) - r.top;
+    return new THREE.Vector2(cx, cy);
+  }
+
+  // Pick a brick using raycasting (returns the brick object or null)
+  function pickBrick(e) {
+    const r = renderer.domElement.getBoundingClientRect();
+    const cx = (e.clientX ?? e.touches[0].clientX) - r.left;
+    const cy = (e.clientY ?? e.touches[0].clientY) - r.top;
+    const x = (cx / r.width) * 2 - 1;
+    const y = -(cy / r.height) * 2 + 1;
+    
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(new THREE.Vector2(x, y), camera);
+    
+    // Collect all brick meshes
+    const allMeshes = [];
+    for(const brick of worldBricks) {
+      brick.mesh.traverse(child => {
+        if(child.isMesh) allMeshes.push(child);
+      });
+    }
+    
+    const intersects = raycaster.intersectObjects(allMeshes, false);
+    if(intersects.length > 0) {
+      // Find which brick this mesh belongs to
+      for(const brick of worldBricks) {
+        let found = false;
+        brick.mesh.traverse(child => {
+          if(child === intersects[0].object) found = true;
+        });
+        if(found) return brick;
+      }
+    }
+    return null;
+  }
+
+  // Create a new brick for dragging
+  function spawn(w, h){
+    // Clean up any previous dragging mesh
+    if(dragging && dragging.mesh) {
+      scene.remove(dragging.mesh);
+    }
+    // Clean up any dependent meshes
+    if(draggedBrickGroup && draggedBrickGroup.dependentMeshes) {
+      for(const depMesh of draggedBrickGroup.dependentMeshes) {
+        scene.remove(depMesh.mesh);
+      }
+    }
+    
+    const color = randColor();
+    const mesh = makeBrickMesh(w, h, color);
+    mesh.position.set(pointer.x, pointer.y, 0);
+    scene.add(mesh);
+    dragging = {w, h, color, mesh};
+    draggedBrickGroup = null;
+  }
+
+  // Drop the currently dragging brick into the world
+  function drop(){
+    if(!dragging) return;
+    
+    const {w, h, color, mesh} = dragging;
+    const gx = Math.round(pointer.x / STUD - w/2);
+    const gy = Math.round(pointer.y / STUD);
+    const attach = nearestAttach(gx, gy, w);
+    const finalGy = attach.y;
+    const finalGx = attach.x;
+    
+    // Don't place if it would overlap with existing bricks
+    if(overlaps(finalGx, finalGy, w, h)){
+      scene.remove(mesh);
+      // Clean up dependent meshes
+      if(draggedBrickGroup && draggedBrickGroup.dependentMeshes) {
+        for(const depMesh of draggedBrickGroup.dependentMeshes) {
+          scene.remove(depMesh.mesh);
+        }
+      }
+      dragging = null;
+      draggedBrickGroup = null;
+      return;
+    }
+    
+    // Place the main brick
+    place(finalGx, finalGy, w, h, color);
+    scene.remove(mesh);
+    
+    // If we were dragging existing bricks, place all the dependent ones too
+    if(draggedBrickGroup && draggedBrickGroup.dependents) {
+      const deltaGx = finalGx - draggedBrickGroup.originalGx;
+      const deltaGy = finalGy - draggedBrickGroup.originalGy;
+      
+      for(const dep of draggedBrickGroup.dependents) {
+        const newGx = dep.gx + deltaGx;
+        const newGy = dep.gy + deltaGy;
+        place(newGx, newGy, dep.w, dep.h, dep.color);
+      }
+      
+      // Clean up dependent meshes
+      if(draggedBrickGroup.dependentMeshes) {
+        for(const depMesh of draggedBrickGroup.dependentMeshes) {
+          scene.remove(depMesh.mesh);
+        }
+      }
+    }
+    
+    dragging = null;
+    draggedBrickGroup = null;
+  }
+
+  // ============================================================================
+  // EVENT LISTENERS
+  // ============================================================================
+
+  // Handle pointer down: pick existing brick or start panning
+  renderer.domElement.addEventListener('pointerdown', e => {
+    // If we're spawning a new brick from UI, don't interfere
+    if(isSpawningNewBrick) {
+      isSpawningNewBrick = false; // Reset flag
+      return;
+    }
+    
+    // Don't pick bricks if we're already dragging a new brick
+    if(dragging) return;
+    
+    // Try to pick an existing brick
+    const pickedBrick = pickBrick(e);
+    if(pickedBrick) {
+      // Start dragging this brick and all dependents
+      const dependents = getDependentBricks(pickedBrick);
+      const allBricks = [pickedBrick, ...dependents];
+      
+      // Remove them from the world temporarily
+      removeBricks(allBricks);
+      
+      // Create dragging mesh for the main brick
+      const mesh = makeBrickMesh(pickedBrick.w, pickedBrick.h, pickedBrick.color);
+      mesh.position.copy(pickedBrick.mesh.position);
+      scene.add(mesh);
+      
+      // Create meshes for dependent bricks to move along with main brick
+      const dependentMeshes = [];
+      for(const dep of dependents) {
+        const depMesh = makeBrickMesh(dep.w, dep.h, dep.color);
+        depMesh.position.copy(dep.mesh.position);
+        scene.add(depMesh);
+        dependentMeshes.push({
+          mesh: depMesh,
+          offsetX: dep.mesh.position.x - pickedBrick.mesh.position.x,
+          offsetY: dep.mesh.position.y - pickedBrick.mesh.position.y,
+          offsetZ: dep.mesh.position.z - pickedBrick.mesh.position.z
+        });
+      }
+      
+      dragging = {w: pickedBrick.w, h: pickedBrick.h, color: pickedBrick.color, mesh};
+      draggedBrickGroup = {
+        originalGx: pickedBrick.gx,
+        originalGy: pickedBrick.gy,
+        dependents: dependents,
+        dependentMeshes: dependentMeshes
+      };
+      
+      return;
+    }
+    
+    // Start panning if no brick was picked
+    isPanning = true;
+    panStart = getPointerPos(e);
+  });
+
+  // Handle pointer move: update dragging brick or pan camera
+  renderer.domElement.addEventListener('pointermove', e => {
+    const p = toWorld(e);
+    pointer.x = p.x;
+    pointer.y = p.y;
+    
+    if(dragging) {
+      // Move the dragging brick and all dependent bricks
+      const zDepth = STUD * 2.3;  // Lift above the scene
+      dragging.mesh.position.set(p.x, p.y, zDepth);
+      
+      // Move all dependent meshes along with the main brick
+      if(draggedBrickGroup && draggedBrickGroup.dependentMeshes) {
+        for(const depMesh of draggedBrickGroup.dependentMeshes) {
+          depMesh.mesh.position.set(
+            p.x + depMesh.offsetX,
+            p.y + depMesh.offsetY,
+            zDepth + depMesh.offsetZ
+          );
+        }
+      }
+    } else if(isPanning) {
+      // Pan the camera
+      const current = getPointerPos(e);
+      panDelta.subVectors(current, panStart);
+      
+      // Convert screen space delta to world space
+      const vFOV = camera.fov * Math.PI / 180;
+      const height = 2 * Math.tan(vFOV / 2) * camera.position.z;
+      const width = height * camera.aspect;
+      
+      const worldDeltaX = -(panDelta.x / renderer.domElement.clientWidth) * width;
+      const worldDeltaY = (panDelta.y / renderer.domElement.clientHeight) * height;
+      
+      cameraTarget.x += worldDeltaX;
+      cameraTarget.y += worldDeltaY;
+      camera.position.x = cameraTarget.x;
+      camera.position.y = cameraTarget.y;
+      camera.lookAt(cameraTarget);
+      
+      panStart.copy(current);
+      drawGround();
+    }
+  });
+
+  // Handle pointer up: drop brick or stop panning
+  renderer.domElement.addEventListener('pointerup', e => {
+    if(isPanning) {
+      isPanning = false;
+    } else {
+      drop();
+    }
+  });
+
+  // ============================================================================
+  // UI SETUP
+  // ============================================================================
+  
+  const ui=document.getElementById('ui');
+  
+  // Create 3D preview for each brick type
+  function createBrickPreview(w, h) {
+    const container = document.createElement('div');
+    container.className = 'brick-button';
+    
+    // Create canvas for 3D preview
+    const canvas = document.createElement('canvas');
+    canvas.className = 'brick-canvas';
+    canvas.width = 80;
+    canvas.height = 80;
+    
+    // Setup mini scene for preview
+    const previewScene = new THREE.Scene();
+    const previewCamera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000);
+    previewCamera.position.set(w*STUD*0.8, h*STUD*0.8, w*STUD*1.2);
+    previewCamera.lookAt(0, 0, 0);
+    
+    const previewRenderer = new THREE.WebGLRenderer({canvas, antialias: true, alpha: true});
+    previewRenderer.setSize(80, 80);
+    previewRenderer.setClearColor(0x000000, 0);
+    
+    // Lighting for preview
+    previewScene.add(new THREE.AmbientLight(0xffffff, 0.6));
+    const previewLight = new THREE.DirectionalLight(0xffffff, 2);
+    previewLight.castShadow = true;
+    previewLight.position.set(10, 10, 10);
+    previewScene.add(previewLight);
+    
+    // Create gray brick
+    const GRAY = 0xEEEEEE;
+    const previewBrick = makeBrickMesh(w, h, GRAY);
+    previewBrick.position.y = -h*STUD/2; // Center vertically
+    previewScene.add(previewBrick);
+    
+    // Add animation for this preview
+    previewAnimations.push({
+      brick: previewBrick,
+      renderer: previewRenderer,
+      scene: previewScene,
+      camera: previewCamera
+    });
+    
+    // Add label
+    const label = document.createElement('div');
+    label.className = 'brick-label';
+    label.textContent = `${w}×${h}`;
+    
+    container.appendChild(canvas);
+    container.appendChild(label);
+    
+    // Use pointerdown for immediate drag-to-place behavior
+    container.addEventListener('pointerdown', (e) => {
+      e.stopPropagation(); // Prevent canvas event from firing
+      isSpawningNewBrick = true;
+      spawn(w, h);
+      
+      // Update pointer position immediately
+      const p = toWorld(e);
+      pointer.x = p.x;
+      pointer.y = p.y;
+      
+      // Position the new brick at pointer
+      if(dragging && dragging.mesh) {
+        const zDepth = STUD * 2.3;
+        dragging.mesh.position.set(p.x, p.y, zDepth);
+      }
+    });
+    
+    return container;
+  }
+  
+  // Create UI buttons for all brick types
+  CATALOG.forEach(({w,h})=>{
+    ui.appendChild(createBrickPreview(w, h));
+  });
+
+  // ============================================================================
+  // STARTER STRUCTURE
+  // ============================================================================
+
+  // Create a random cluster of bricks to get the user started
+  function createStarterStructure() {
+    const numBricks = 5 + Math.floor(Math.random() * 6); // 5-10 bricks
+    const usedPositions = new Set(); // Track occupied positions to avoid overlaps
+    
+    // Helper to check if position is available
+    const isAvailable = (gx, gy, w, h) => {
+      for(let x = gx; x < gx + w; x++) {
+        for(let y = gy; y < gy + h; y++) {
+          if(usedPositions.has(`${x},${y}`)) return false;
+        }
+      }
+      return true;
+    };
+    
+    // Mark positions as used
+    const markUsed = (gx, gy, w, h) => {
+      for(let x = gx; x < gx + w; x++) {
+        for(let y = gy; y < gy + h; y++) {
+          usedPositions.add(`${x},${y}`);
+        }
+      }
+    };
+    
+    // Start with a base layer (wider bricks)
+    const baseBricks = [
+      {w: 4, h: 1},
+      {w: 3, h: 1},
+      {w: 2, h: 1}
+    ];
+    
+    let placed = 0;
+    
+    // Place 2-3 base bricks on the ground
+    const numBaseBricks = 2 + Math.floor(Math.random() * 2); // 2-3 base bricks
+    for(let i = 0; i < numBaseBricks && placed < numBricks; i++) {
+      const brickType = baseBricks[Math.floor(Math.random() * baseBricks.length)];
+      const w = brickType.w;
+      const h = brickType.h;
+      
+      // Try to place near the origin (between -4 and 4)
+      const gx = -2 + Math.floor(Math.random() * 5);
+      const gy = 0;
+      
+      if(isAvailable(gx, gy, w, h)) {
+        place(gx, gy, w, h, randColor());
+        markUsed(gx, gy, w, h);
+        placed++;
+      }
+    }
+    
+    // Place remaining bricks on top
+    const attempts = 50; // Max attempts to place remaining bricks
+    for(let attempt = 0; attempt < attempts && placed < numBricks; attempt++) {
+      // Pick a random brick size
+      const brickType = CATALOG[Math.floor(Math.random() * CATALOG.length)];
+      const w = brickType.w;
+      const h = brickType.h;
+      
+      // Try to place on top of existing bricks
+      const gx = -4 + Math.floor(Math.random() * 9); // -4 to 4
+      const gy = highestAttachY(gx, w);
+      
+      // Only place if it's on the ground or on top of something, and doesn't overlap
+      if(gy >= 0 && gy <= 3 && isAvailable(gx, gy, w, h) && !overlaps(gx, gy, w, h)) {
+        place(gx, gy, w, h, randColor());
+        markUsed(gx, gy, w, h);
+        placed++;
+      }
+    }
+  }
+  
+  // Create the starter structure on load
+  createStarterStructure();
+
+  // ============================================================================
+  // WELCOME OVERLAY
+  // ============================================================================
+
+  // Handle click on welcome overlay to fade it out
+  const welcomeOverlay = document.getElementById('welcome-overlay');
+  welcomeOverlay.addEventListener('click', () => {
+    welcomeOverlay.classList.add('fade-out');
+    // Remove from DOM after animation completes
+    setTimeout(() => {
+      welcomeOverlay.remove();
+    }, 800);
+  });
+
+  // ============================================================================
+  // ANIMATION LOOP
+  // ============================================================================
+
+  function loop(){
+    // Update particles
+    updateParticles();
+    
+    // Animate preview bricks
+    for(const preview of previewAnimations) {
+      preview.brick.rotation.y += 0.01;
+      preview.renderer.render(preview.scene, preview.camera);
+    }
+    
+    // Main scene
+    renderer.render(scene,camera);
+    requestAnimationFrame(loop);
+  }
+  loop();
+  </script>
+</body>
 </html>
