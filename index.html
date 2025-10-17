@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MG0EHK5LQF"></script>
+  <!-- Google tag (first-party via analytics.reshef.io) -->
+  <script async src="https://analytics.reshef.io/gtag/js?id=G-MG0EHK5LQF"></script>
   <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-MG0EHK5LQF');
-  </script>
+  gtag('config', 'G-MG0EHK5LQF', {
+    cookie_domain: 'reshef.io',
+    transport_url: 'https://analytics.reshef.io'
+  });
+</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reshef Elisha</title>
