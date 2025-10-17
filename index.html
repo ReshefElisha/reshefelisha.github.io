@@ -276,6 +276,9 @@
   // STATE
   // ============================================================================
   
+
+  const isMobileViewport = window.innerWidth <= 768;
+
   // Camera panning
   const cameraTarget = new THREE.Vector3(0, initialCameraY, 0);
   let isPanning = false;
@@ -293,6 +296,7 @@
   let draggedBrickGroup = null;
   const pointer = {x: 0, y: 0};
   let isSpawningNewBrick = false; // Track if we're spawning from UI button
+  let isDraggingStarted = false; // Track if user has started dragging
   
   // UI preview animations
   const previewAnimations = [];
@@ -677,10 +681,20 @@
     
     const color = randColor();
     const mesh = makeBrickMesh(w, h, color);
-    mesh.position.set(pointer.x, pointer.y, 0);
+    
+    // On mobile: spawn in center for better visibility
+    // On desktop: spawn at pointer position (traditional behavior)
+    if(isMobileViewport) {
+      const centerX = cameraTarget.x;
+      const centerY = cameraTarget.y;
+      const zDepth = STUD * 2.3; // Lift above scene
+      mesh.position.set(centerX, centerY, zDepth);
+    }
+    
     scene.add(mesh);
     dragging = {w, h, color, mesh};
     draggedBrickGroup = null;
+    isDraggingStarted = false; // Reset dragging state for spinning animation
   }
 
   // Drop the currently dragging brick into the world
@@ -733,6 +747,7 @@
     
     dragging = null;
     draggedBrickGroup = null;
+    isDraggingStarted = false; // Reset for next brick
   }
 
   // ============================================================================
@@ -802,6 +817,12 @@
     pointer.y = p.y;
     
     if(dragging) {
+      // Stop spinning when user starts dragging
+      if(!isDraggingStarted) {
+        isDraggingStarted = true;
+        dragging.mesh.rotation.y = 0; // Reset rotation to normal
+      }
+      
       // Move the dragging brick and all dependent bricks
       const zDepth = STUD * 2.3;  // Lift above the scene
       dragging.mesh.position.set(p.x, p.y, zDepth);
@@ -909,18 +930,15 @@
     container.addEventListener('pointerdown', (e) => {
       e.stopPropagation(); // Prevent canvas event from firing
       isSpawningNewBrick = true;
-      spawn(w, h);
+      spawn(w, h); // Brick spawns in center of view
       
-      // Update pointer position immediately
+      // Update pointer position for future dragging
       const p = toWorld(e);
       pointer.x = p.x;
       pointer.y = p.y;
       
-      // Position the new brick at pointer
-      if(dragging && dragging.mesh) {
-        const zDepth = STUD * 2.3;
-        dragging.mesh.position.set(p.x, p.y, zDepth);
-      }
+      // Don't move brick immediately - let it stay in center
+      // It will move on the next pointermove event when user drags
     });
     
     return container;
@@ -1036,6 +1054,11 @@
     for(const preview of previewAnimations) {
       preview.brick.rotation.y += 0.01;
       preview.renderer.render(preview.scene, preview.camera);
+    }
+    
+    // Spin the dragging brick before user starts moving it
+    if(dragging && !isDraggingStarted && isMobileViewport) {
+      dragging.mesh.rotation.y += 0.05; // Faster spin than preview buttons
     }
     
     // Main scene
