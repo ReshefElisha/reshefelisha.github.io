@@ -164,7 +164,8 @@
   <div id="welcome-overlay">
     <h1>Reshef's personal site</h1>
     <p>... is still under construction</p>
-    <p>but you can help build it!</p>
+    <p>but you can help build it!<br/>
+    (click anywhere to start)</p>
   </div>
   <div id="ui"></div>
   <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
@@ -299,7 +300,7 @@
   let draggedBrickGroup = null;
   const pointer = {x: 0, y: 0};
   let isSpawningNewBrick = false; // Track if we're spawning from UI button
-  let isDraggingStarted = false; // Track if user has started dragging
+  let isDraggingStarted = false; // Track if user has started dragging (false = should spin)
   
   // UI preview animations
   const previewAnimations = [];
@@ -670,7 +671,7 @@
   }
 
   // Create a new brick for dragging
-  function spawn(w, h){
+  function spawn(w, h, color = null){
     // Clean up any previous dragging mesh
     if(dragging && dragging.mesh) {
       scene.remove(dragging.mesh);
@@ -682,22 +683,20 @@
       }
     }
     
-    const color = randColor();
-    const mesh = makeBrickMesh(w, h, color);
+    // Use provided color or generate random one
+    const brickColor = color || randColor();
+    const mesh = makeBrickMesh(w, h, brickColor);
     
-    // On mobile: spawn in center for better visibility
-    // On desktop: spawn at pointer position (traditional behavior)
-    if(isMobileViewport) {
-      const centerX = cameraTarget.x;
-      const centerY = cameraTarget.y;
-      const zDepth = STUD * 2.3; // Lift above scene
-      mesh.position.set(centerX, centerY, zDepth);
-    }
+    // spawn in center for better visibility
+    const centerX = cameraTarget.x;
+    const centerY = cameraTarget.y;
+    const zDepth = STUD * 2.3; // Lift above scene
+    mesh.position.set(centerX, centerY, zDepth);
     
     scene.add(mesh);
-    dragging = {w, h, color, mesh};
+    dragging = {w, h, color: brickColor, mesh};
     draggedBrickGroup = null;
-    isDraggingStarted = false; // Reset dragging state for spinning animation
+    isDraggingStarted = false; // New bricks start spinning until user moves them
   }
 
   // Drop the currently dragging brick into the world
@@ -804,6 +803,7 @@
         dependents: dependents,
         dependentMeshes: dependentMeshes
       };
+      isDraggingStarted = true; // Existing bricks start as already dragging (no spin)
       
       return;
     }
@@ -907,19 +907,23 @@
     previewLight.position.set(10, 10, 10);
     previewScene.add(previewLight);
     
-    // Create gray brick
-    const GRAY = 0xEEEEEE;
-    const previewBrick = makeBrickMesh(w, h, GRAY);
+    // Create brick with random color (not gray!)
+    let currentColor = randColor();
+    const previewBrick = makeBrickMesh(w, h, currentColor);
     previewBrick.position.y = -h*STUD/2; // Center vertically
     previewScene.add(previewBrick);
     
     // Add animation for this preview
-    previewAnimations.push({
+    const previewData = {
       brick: previewBrick,
       renderer: previewRenderer,
       scene: previewScene,
-      camera: previewCamera
-    });
+      camera: previewCamera,
+      currentColor: currentColor,
+      w: w,
+      h: h
+    };
+    previewAnimations.push(previewData);
     
     // Add label
     const label = document.createElement('div');
@@ -933,7 +937,32 @@
     container.addEventListener('pointerdown', (e) => {
       e.stopPropagation(); // Prevent canvas event from firing
       isSpawningNewBrick = true;
-      spawn(w, h); // Brick spawns in center of view
+      
+      // Spawn brick with the current preview color (use previewData.currentColor for latest)
+      spawn(w, h, previewData.currentColor);
+      
+      // Create particle effect at the button location
+      const rect = container.getBoundingClientRect();
+      const buttonCenterX = rect.left + rect.width / 2;
+      const buttonCenterY = rect.top + rect.height / 2;
+      
+      // Convert button position to world coordinates for particles
+      const buttonWorld = toWorld({
+        clientX: buttonCenterX,
+        clientY: buttonCenterY
+      });
+      spawnParticles(buttonWorld.x, buttonWorld.y, STUD, previewData.currentColor, 8);
+      
+      // Change preview brick to new random color
+      const newColor = randColor();
+      previewData.currentColor = newColor;
+      
+      // Update all materials in the preview brick to new color
+      previewBrick.traverse((child) => {
+        if(child.isMesh && child.material) {
+          child.material.color.setHex(newColor);
+        }
+      });
       
       // Update pointer position for future dragging
       const p = toWorld(e);
@@ -1060,7 +1089,7 @@
     }
     
     // Spin the dragging brick before user starts moving it
-    if(dragging && !isDraggingStarted && isMobileViewport) {
+    if(dragging && !isDraggingStarted) {
       dragging.mesh.rotation.y += 0.05; // Faster spin than preview buttons
     }
     
