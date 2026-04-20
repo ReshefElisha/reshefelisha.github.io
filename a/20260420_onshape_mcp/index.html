@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://analytics.reshef.io/gtag/js?id=G-MG0EHK5LQF"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-MG0EHK5LQF', {
+      cookie_domain: 'reshef.io',
+      transport_url: 'https://analytics.reshef.io'
+    });
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I taught Claude to do real CAD work. Here's what I learned. — Reshef Elisha</title>
+  <meta name="description" content="Notes from shipping Jarvis Onshape MCP, a Claude Code plugin that drives Onshape CAD." />
+  <link rel="canonical" href="https://reshef.io/a/20260420_onshape_mcp/" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    :root {
+      --fg: #1a1a1a;
+      --fg-muted: #555;
+      --bg: #fdfdfc;
+      --accent: #2a5fb4;
+      --border: #e5e5e2;
+      --code-bg: #f4f4f2;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 24px 96px;
+    }
+
+    nav.top {
+      font-size: 14px;
+      color: var(--fg-muted);
+      margin-bottom: 40px;
+    }
+    nav.top a {
+      color: var(--fg-muted);
+      text-decoration: none;
+    }
+    nav.top a:hover { color: var(--accent); }
+
+    header h1 {
+      font-size: 34px;
+      line-height: 1.2;
+      margin: 0 0 12px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    header .meta {
+      font-size: 14px;
+      color: var(--fg-muted);
+      margin-bottom: 40px;
+    }
+
+    article h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin: 48px 0 16px;
+      letter-spacing: -0.005em;
+    }
+
+    article p {
+      margin: 0 0 20px;
+    }
+
+    article a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+    article a:hover { text-decoration-thickness: 2px; }
+
+    article strong { font-weight: 600; }
+    article em { font-style: italic; }
+
+    article ul {
+      padding-left: 22px;
+      margin: 0 0 20px;
+    }
+    article li { margin-bottom: 10px; }
+
+    article code {
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.92em;
+      background: var(--code-bg);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    article pre {
+      background: var(--code-bg);
+      padding: 16px 18px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0 0 24px;
+    }
+    article pre code {
+      background: none;
+      padding: 0;
+      font-size: inherit;
+    }
+
+    article table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0 0 28px;
+      font-size: 15px;
+    }
+    article th, article td {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+    article th {
+      background: var(--code-bg);
+      font-weight: 600;
+    }
+
+    article hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0;
+    }
+
+    .video-wrap {
+      margin: 0 0 28px;
+    }
+    .video-wrap video {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 6px;
+      background: #000;
+    }
+    .video-caption {
+      font-size: 13px;
+      color: var(--fg-muted);
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    footer.article-foot {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--fg-muted);
+    }
+
+    @media (max-width: 600px) {
+      main { padding: 32px 18px 64px; }
+      header h1 { font-size: 27px; }
+      article h2 { font-size: 20px; }
+      body { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <nav class="top"><a href="/">&larr; reshef.io</a></nav>
+
+    <header>
+      <h1>I taught Claude to do real CAD work. Here's what I learned.</h1>
+      <div class="meta">
+        <time datetime="2026-04-20">April 20, 2026</time> &middot; Reshef Elisha
+      </div>
+    </header>
+
+    <article>
+      <p>Working on hardware, I've been able to supercharge my software thanks to agentic tools. I haven't been able to do this for hardware until now. Claude Opus 4.7 came out last week with advanced visual reasoning skills. This is the first model that, when combined with its harness, can do actual productive mechanical engineering and CAD.</p>
+
+      <p>I've shipped the result as <a href="https://github.com/ReshefElisha/jarvis-onshape-mcp">Jarvis Onshape MCP</a>, a Claude Code plugin that drives Onshape. You install it with one command. Here's the monitor arm it built for me yesterday:</p>
+
+      <div class="video-wrap">
+        <video controls muted loop playsinline preload="metadata" poster="">
+          <source src="monitor_arm_demo.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div class="video-caption">Monitor arm build, 10&times; speed.</div>
+      </div>
+
+      <p>That's four parts. A desk-clamp base with a post, two arm segments with cross-rib structural channels (which admittedly still need a bit of work), and a monitor pivot with a VESA-compliant mounting plate. I gave Claude a reference sketch and a paragraph-and-a-half description. It produced a structured feature tree, showed me the plan, and then built it. Start to finish in about an hour of real time.</p>
+
+      <p>I've been building in CAD for years. This is the first time an AI tool has felt like it was working <em>with</em> me on a design, instead of flailing miserably trying to do mental visualization it was never built to do.</p>
+
+      <h2>The experiment I didn't expect to run</h2>
+
+      <p>I went in assuming the hard problem was CAD execution. I assumed that driving the kernel, using native CAD features, keeping track of which face to sketch on, keeping track of geometry through tool calls, that was going to be the grind.</p>
+
+      <p>I was wrong. With a decent (and continuously-improving) MCP, CAD functions are just the same as code.</p>
+
+      <p>The hard part is that Claude is (still) blind.</p>
+
+      <p>To figure out where Claude was actually getting stuck, I built an eval harness. 27 reference parts across three difficulty tiers. A layered grader that compares the agent's output STEP against a ground-truth STEP on six geometric axes: volume, bounding box, topology signature, Boolean intersection-over-union, Chamfer distance between surfaces, all composited into a single score in [0, 1]. The grader is rotation and translation invariant, so "correct part in a different world frame" still counts as correct. The usual boring stuff.</p>
+
+      <p>Then I spent two days running variants. Prompt tweaks, new MCP tools, dataset rebalancings. Everything I could think of that might make Claude read engineering drawings better.</p>
+
+      <p>Almost nothing worked. One variant of "telling the agent to list features from the reference render before building" moved the score from 0.155 to 0.193 on medium-difficulty parts. A +0.04 improvement, four times above the noise floor, but still barely a scratch. The other seven variants either didn't move the needle or actively regressed.</p>
+
+      <p>That's when I tried the experiment that actually settled the question.</p>
+
+      <h2>The 2&times;2</h2>
+
+      <p>I decided to take the hardest brief Claude could kind of do (scoring around 0.5 on) and write the spec by hand. A plain-English paragraph describing every feature. Then feed it to the build phase of the agent, skipping the vision decomposition entirely.</p>
+
+      <p>Here's what happened:</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Model Mania 2025 (simpler)</th>
+            <th>Model Mania 2021 (harder)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Autonomous vision</strong></td>
+            <td>0.533, 147 turns, 40 min</td>
+            <td>0.000 (never exported), 151 turns</td>
+          </tr>
+          <tr>
+            <td><strong>Handwritten spec</strong></td>
+            <td>1.000, 57 turns, 7 min</td>
+            <td>0.615, 102 turns, 27 min</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Same model. Same CAD tools. Same grader. The only difference is who wrote the spec.</p>
+
+      <p>Model Mania 2025 with a clean human description: perfect score on every grader layer. Volume off by 0.007% from ground truth. Built in seven minutes.</p>
+
+      <p>The autonomous version of the same brief, with 147 turns of self-correction, topped out at 0.533. Not because it couldn't build what it described but because it described the wrong thing. For example, it saw a pocket on the front face and modeled it as a simple rounded rectangle. The actual pocket outline was the part's silhouette offset inward by 10mm, cutting around two holes. Claude simplified it confidently and shipped, wrong. Any human reading the drawing could give the right shape, but Claude's vision is still blurry.</p>
+
+      <p>Model Mania 2021, the harder part: hand-written description scored 0.615, and it was far from my best description (look at the part yourself and try to describe it, it's tough!) The autonomous version scored 0.000: it built something, but ran out of turn budget before it managed to export it.</p>
+
+      <h2>What this means</h2>
+
+      <p>The bottleneck for AI-driven CAD isn't the kernel. It isn't the tool surface. It isn't even the prompt scaffolding, which I spent two days tweaking. It's image understanding. Opus 4.7 can read a reference image well enough to understand "this is a bracket with some holes," but can't yet be trusted to infer the <em>specific</em> geometry &mdash; the polarity of a feature (boss or pocket?), the derivation of a shape (offset from what?), the scale when the callouts are small.</p>
+
+      <p>What it <em>can</em> do is execute engineering geometry reliably when given a clean spec. Once the features are described unambiguously, the build is mechanical (pun intended).</p>
+
+      <p>That's a good result, actually. It means the plugin has a clear niche: not "autonomous CAD" (we're not there yet), but "CAD copilot driven by design intent." You describe what you want in plain English. Claude produces a feature tree. You sanity-check it, maybe correct a mis-read, and then it builds. The workflow replaces keyboard shortcuts and feature-tree surgery with typing and verbal iteration. If you already know what you're building, Claude is remarkably fast at building it. As usual with early AI tools, the first step to building something is being able to describe what you want to build (&#128580;)</p>
+
+      <h2>The takeaway</h2>
+
+      <p>From the 2&times;2 experiment onwards, I focused on giving Claude glasses. All the tools I had it build were focused on improving model inspection, allowing it to render, describe in words, zoom, crop, etc... This meaningfully helped it catch its own mistakes while building.</p>
+
+      <h2>What's in the plugin</h2>
+
+      <p>About 60 MCP tools covering sketches, extrudes, fillets, patterns, mates, parametric variables, and a FeatureScript escape hatch for the weird stuff. Everything returns structured truth: what feature got built, what warnings the regenerator raised, what the next likely move is. No silent failures.</p>
+
+      <p>Two skills ship with it:</p>
+
+      <ul>
+        <li>An Onshape CAD skill that encodes the protocols that keep CAD builds from silently failing. Unit conventions, coordinate frames, render-first and entity-first workflows, iteration discipline.</li>
+        <li>A vision-decomposition skill that walks the model through reading a reference image before building. Overview &rarr; cache &rarr; zoom into each feature &rarr; structured output. It's not magic &mdash; my benchmark showed it doesn't close the vision gap &mdash; but it makes the gap visible. You see the feature tree before Claude commits to it. You can fix the mis-reads that matter before burning turns on a wrong build.</li>
+      </ul>
+
+      <p>Install:</p>
+
+      <pre><code>/plugin install jarvis-onshape-mcp</code></pre>
+
+      <p><a href="https://github.com/ReshefElisha/jarvis-onshape-mcp">Repo</a>. <a href="https://github.com/ReshefElisha/jarvis-onshape-mcp/blob/main/RESEARCH.md">Full benchmark data</a> in <code>RESEARCH.md</code>.</p>
+
+      <h2>The thing I want to say about this</h2>
+
+      <p>In hardware, we're watching the software world get eaten by AI and are counting the days until we meet the same fate. I think we're there. Last month I would have said we'd need a dedicated vision model trained on engineering drawings. Today I'm publishing a plugin that an engineer can install in thirty seconds and use productively for real design work, as long as they're willing to type a paragraph.</p>
+
+      <p>The gap between "it needs a massive training cluster" and "it's doable in a plugin" is shorter than it feels. And the direction is obvious once you look: the capability bottleneck isn't where we expect. CAD kernels are solved. Prompt engineering is a distraction. The hard problem is whether the model can look at an engineering drawing and know what it's looking at. I wouldn't be surprised if there are dedicated vision models that can (or soon will) create the right descriptions for Claude even better than I can.</p>
+
+      <hr />
+
+      <p><em>Try Jarvis Onshape MCP: <a href="https://github.com/ReshefElisha/jarvis-onshape-mcp">github.com/ReshefElisha/jarvis-onshape-mcp</a>. Full research writeup and benchmark methodology: <a href="https://github.com/ReshefElisha/jarvis-onshape-mcp/blob/main/RESEARCH.md">RESEARCH.md</a>.</em></p>
+    </article>
+
+    <footer class="article-foot">
+      <a href="/">&larr; Back to reshef.io</a>
+    </footer>
+  </main>
+</body>
+</html>
